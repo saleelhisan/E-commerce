@@ -1,0 +1,58 @@
+<body style="background-color: rgb(255, 255, 255);>
+<section>
+    <div class="container">
+        <div class="row mt-3">
+            <a href="/admin/add-user" class="btn btn-success ml-auto">Add user</a>
+        </div>
+        <table class="table table-striped mt-3" id="viewusers">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Mobile</th>
+      <th scope="col">Email</th>
+      {{!-- <th scope="col">Edit User</th>
+      <th scope="col">Delete User</th> --}}
+      <th scope="col">Block / Unblock</th>
+      
+
+    </tr>
+  </thead>
+  <tbody>
+    {{#each allUsers}}
+    <tr>
+      <th scope="row">{{inc @index}}</th>
+      <td>{{this._id}}</td>
+      <td>{{this.name}}</td>
+      <td>{{this.mobile}}</td>
+      <td>{{this.email}}</td>
+      {{!-- <td><a href="/admin/edit-user/{{this.email}}" class="btn btn-outline-primary">Edit</a></td>
+      <td><a href="/admin/delete-user/{{this.email}}" class="btn btn-outline-danger" onclick="return confir('deleting {{this.name}}')">Delete</a></td> --}}
+       {{#if this.isBlocked}}
+                        <td class="pl-5 d-flex"><a href="/admin/unblock-user/{{this._id}}"><i class="bi bi-toggle-on fa-2x " aria-hidden="true" onclick="return confirm('Are you want to Unblock {{this.username}}')"></i></a><P>blocked</P></td>
+                        {{else}}
+                        <td class="pl-5 d-flex"><a href="/admin/block-user/{{this._id}}"><i class="bi bi-toggle-off fa-2x " aria-hidden="true" onclick="return confirm('Are you want to Block {{this.username}}')"></i></a></td>
+                        {{/if}}
+    </tr>
+    {{/each}}
+    </tbody>
+</table>
+    </div>
+</section>
+  {{!-- jquery cdn --}}
+
+ <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
+            {{!-- datatable js --}}
+
+        <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+{{!-- data table ajax --}}
+<script>
+    $(document).ready( function () {
+        $.noConflict();
+    $('#viewusers').DataTable();
+} );
+</script>
+</body>

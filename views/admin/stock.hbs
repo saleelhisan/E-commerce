@@ -1,0 +1,41 @@
+<div class="ml-auto" style="width:74%">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-12 mt-5">
+                <div class="container-fluid">
+                    <div class="row">
+                        
+                    </div>
+                </div>
+                <table class="table" id="viewusers">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            {{!-- <th scope="col">Category Id</th> --}}
+                            <th scope="col">Product Name</th>
+                            <th scope="col">current stocks </th>
+                            <th scope="col">Update stocks </th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each stock}}
+                        <tr>
+                        <td scope="row" class="fs-bold">{{inc @index}}</td>
+                        {{!-- <td>{{this._id}}</td> --}}
+                        <td>{{this.name}}</td>
+                        <td class="pl-5"><strong>{{this.stock}}</strong></td>
+                        <form action="/admin/inventory" method="post">
+                        <td><input type="number" name="stock"></td>
+                        <input type="text" class="d-none" name="id" value="{{this._id}}"> 
+                        <td><button type="submit" class="btn btn-dark mt-2">Update</button></td>
+                        </form>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

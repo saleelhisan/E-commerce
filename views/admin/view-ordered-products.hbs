@@ -1,0 +1,37 @@
+<div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+    <div class="container">
+        <h1 class="page-title">Order Details</h1>
+    </div><!-- End .container -->
+</div><!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+            <li class="breadcrumb-item"><a href="/admin/order-management">orders</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="#">order-details</a></li>
+        </ol>
+    </div><!-- End .container -->
+</nav>
+<div class="container-fluid">
+    <div class="row">
+         <div class="col-12 col-lg-12 d-flex align-items-center ">
+            <div class="card-body p-4 md-4 text-black d-flex">
+                {{#each products}}
+                <div class="p-3">
+                    <div class="card" style="width:200px;height: 400px;border: 2px, solid, black">
+                        <img class="card-img-top" src="/product-image/{{this.product._id}}1.jpg" alt="Card image"
+                            style="width:100%">
+                        <div class="card-body" style="width:200px;height: 400px">
+                            <h4 class="card-title" style="height: 25px;width">{{this.product.name}}</h4>
+                            <p class="card-text fs-30px"><i
+                                    class="fa fa-light fa-indian-rupee-sign"></i>{{this.product.price}}
+                            </p>
+                            <strong><p class="cart-text">Quantity: {{this.quantity}}</p></strong>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>

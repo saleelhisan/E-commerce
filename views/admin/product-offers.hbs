@@ -1,0 +1,126 @@
+<link href="/assets/css/bootstrap-2.min.css" rel="stylesheet">
+
+<!-- Template Stylesheet -->
+<link href="/assets/css/style3.css" rel="stylesheet">
+<div class="container-fluid position-relative d-flex p-0">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-12 mt-5">
+                <div class="container-fluid">
+                </div>
+                <table class="table" id="viewusers">
+                    <thead class="" style="background: #191c24;">
+                        <tr>
+                            <th scope="col">No</th>
+                            {{!-- <th scope="col">Coupen Name</th> --}}
+                            <th scope="col">Product</th>
+                            <th scope="col">Offer</th>
+                            <th scope="col">Start</th>
+                            <th scope="col">Expiry</th>
+                            {{!-- <th scope="col">Percentage</th> --}}
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+
+                            {{!-- <th scope="col">Status</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each prodOffers}}
+                        <tr>
+                            <th scope="row" class="fs-bold">{{inc @index}}</th>
+                            <td>{{this.product}}</td>
+                            <td>{{this.proOfferPercentage}}</td>
+                            <td>{{this.starting}}</td>
+                            <td>{{this.expiry}}</td>
+
+                            <td><a href="/admin/edit-product-offer/{{this._id}}"><i class="fa fa-edit fa-2x text-dark"
+                                        aria-hidden="true"></i></a></td>
+
+                            <td class=""><a href="/admin/delete-prodOffer/{{this._id}}"><i
+                                        class="fa fa-trash fa-3x text-secondary" aria-hidden="true"
+                                        onclick="return confirm('Are you sure want to Delete {{this.name}} Category')"></i></a>
+                            </td>
+
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <section id="add" class="p-5">
+            <div class="half">
+                <div class="bg order-1 order-md-2" style="background-image: url('');"></div>
+                <div class="contents order-2 order-md-1">
+                    <div class="container">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-block" id="cat">
+                                        <div class="text-center mb-5">
+                                            <h1 class="mt-3"><u>Add new <strong>Product Offer</strong></u></h1>
+
+                                        </div>
+                                        {{!-- <form action="/admin/product-offer" id="productPage" method="post"> --}}
+                                            {{!-- {{#if couponExist}}
+                                            <p class="text-danger">{{couponExist}}</p>
+                                    </div>
+                                    {{/if}} --}}
+                                    {{!-- {{#if couponExist}}
+                                    <div class="alert alert-danger" role="alert">
+                                        This Offer is already exist!
+                                    </div>
+                                    {{/if}} --}}
+                                    {{!-- <div class="form-group first">
+                                        <label>Coupon code</label>
+                                        <input type="text" class="form-control" required name="coupon">
+                                        <label class="pt-4">Starting Date</label>
+                                        <input type="Date" class="form-control" required name="starting" id="str">
+                                        <label class="pt-4">Expiry Date</label>
+                                        <input type="Date" class="form-control" required name="expiry" id="exp">
+                                        <label class="pt-4">product Offer Percentage</label>
+                                        <input type="text" class="form-control" required min="1" name="offer" max="95"
+                                            --}} {{!-- onkeypress="return isNumber(event)/" --}} {{!-- </div>
+                                        <input type="submit" value="Add" id="prosub" class="btn btn-block btn-dark">
+
+                                        </form> --}}
+                                        <form action="/admin/product-offers" id="productPage" method="post">
+                                            {{#if proOfferExist}}
+                                            <div class="alert alert-danger" role="alert">
+                                                A offer for this product already Exist!
+                                            </div>
+                                            {{/if}}
+                                            <div class="form-group first">
+                                                <label for="proList" class="text-dark">Product List</label>
+                                                <input list="products" name="product" class="form-control"
+                                                    autocomplete="off" id="product">
+                                                <datalist id="products">
+                                                    {{#each allProducts}}
+                                                    <option value="{{this.name}}">
+                                                        {{/each}}
+                                                </datalist>
+                                                {{#if proErr}}
+                                                <p class="text-center text-danger">{{proErr}}</p>
+                                                {{/if}}
+                                                <label class="pt-4 text-dark">Starting Date</label>
+                                                <input type="Date" class="form-control" required name="starting"
+                                                    id="str">
+                                                <label class="pt-4 text-dark">Expiry Date</label>
+                                                <input type="Date" class="form-control" required name="expiry" id="exp">
+                                                <label class="pt-4 text-dark">Offer Percentage</label>
+                                                <input type="text" onkeypress="return isNumber(event)" min="1" max="95"
+                                                    class="form-control" required name="proOfferPercentage">
+                                            </div>
+                                            <input type="submit" value="Add" id="prosub"
+                                                class="btn btn-block btn-dark mt-3">
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

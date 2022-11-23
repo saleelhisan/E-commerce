@@ -1,0 +1,189 @@
+<!-- add this  in header image cropping -->
+<!-- add this  in header -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/0.8.1/cropper.min.js"></script>
+
+<link href="/assets/css/bootstrap-2.min.css" rel="stylesheet">
+
+<!-- Template Stylesheet -->
+<link href="/assets/css/style3.css" rel="stylesheet">
+
+<body>
+    <div class="container-fluid position-relative d-flex p-0">
+        {{!-- <div class="content">
+            <div class="bg-secondary"> --}}
+                <div class="container h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col-lg-12 col-xl-11">
+                            <div class="card text-white "
+                                style=" background-color: rgba(255, 0, 0, 0.0); border-radius: 25px;">
+                                <div class="card-body p-md-5">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                                            <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Add Product</p>
+                                            <form action="/admin/add-product" method="post"
+                                                enctype="multipart/form-data" class="mx-1 mx-md-4">
+                                                <div class="row">
+                                                    {{#if productRepeatError}}
+                                                    <div class="alert alert-danger">
+                                                        <strong>{{productRepeatError}}</strong>
+                                                    </div>
+                                                    {{/if}}
+                                                </div>
+                                                <label for="">Name</label>
+                                                <input type="text" name="name" id="name" class="form-control "
+                                                    placeholder="Product Name" minlength="3" onkeyup="validateName()">
+                                                <span id="name-error"></span>
+                                                <div><label for="">select category</label></div>
+                                                <div class="form-group ">
+                                                    <select name="category" class="w-100" id="">
+                                                        {{#each category}}
+                                                        <option>{{this.category}}</option>
+                                                        {{/each}}
+                                                    </select>
+
+                                                </div>
+                                                <label class="form-label" for="">Price</label>
+                                                <div class="form-outline mb-2">
+                                                    <input type="number" name="price" id="price"
+                                                        class="form-control form-control-lg" placeholder="Price"
+                                                        onkeyup="validatePrice()" />
+                                                    <span id="price-error"></span>
+
+                                                </div>
+                                                <label class="form-label" for="">Description</label>
+                                                <div class="form-outline mb-3">
+                                                    <input type="text" name="description" id="description"
+                                                        class="form-control form-control-lg" placeholder="Description"
+                                                        onkeyup="validateDescription()" />
+                                                    <span id="description-error"></span>
+
+                                                </div>
+                                                <label class="form-label" for="">Thumbnail</label>
+                                                <div class="form-outline mb-2">
+                                                    <input type="file" name="image1" id="myFile1"
+                                                        class="form-control form-control-lg " placeholder="Thumbnail"
+                                                        onkeyup="validateImage()" />
+                                                    <span id="image-error"></span>
+                                                </div>
+                                                <!-- cropping is done here -->
+                                                <div id="crop">
+                                                    <div class="vald-info" id="info"></div>
+                                                    <h5 class="error_form text-danger" id="image1_error_message"></h5>
+                                                    <div style="display: flex">
+                                                        <div id="image-box1" class="image-container clr"
+                                                            style="height: 300px; width: 20%">
+                                                        </div>
+                                                        <button type="button" class="btn btneds bg-success"
+                                                            id="crop-btn1"
+                                                            style=" margin-top: 10px; display: none; width: 50%; margin: 20rem 0rem 0rem 0rem;">crop</button>
+                                                    </div>
+                                                </div>
+
+                                                <label class="form-label" for="form2Example27">Image2</label>
+                                                <div>
+                                                    <input type="file" name="image2" id="image2"
+                                                        class="form-control form-control-lg"
+                                                        onkeyup="validateImage2()" />
+                                                    <span id="image-error2"></span>
+                                                </div>
+                                                <label class="form-label" for="form2Example27">Image3</label>
+                                                <div>
+                                                    <input type="file" name="image3" id="image3"
+                                                        class="form-control form-control-lg"
+                                                        onkeyup="validateImage3()" />
+                                                    <span id="image-error3"></span>
+                                                </div>
+                                                <label class="form-label" for="form2Example27">Image4</label>
+                                                <div>
+                                                    <input type="file" name="image4" id="image4"
+                                                        class="form-control form-control-lg"
+                                                        onkeyup="validateImage4()" />
+                                                    <span id="image-error4"></span>
+                                                </div>
+
+                                                <div class="pt-1">
+                                                    <button onsubmit="formSubmit()" type="submit"
+                                                        class="btn btn-dark btn-lg btn-block">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{{!--
+<script src="/javascripts/admin-form.js"></script> --}}
+
+<script>
+    const imagebox1 = document.getElementById("image-box1");
+    const crop_btn1 = document.getElementById("crop-btn1");
+    const input1 = document.getElementById("myFile1");
+
+    // When user uploads the image this event will get triggered
+    input1.addEventListener("change", () => {
+        // Getting image file object from the input variable
+        const img_data1 = input1.files[0];
+        // createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+        // The new object URL represents the specified File object or Blob object.
+        const url1 = URL.createObjectURL(img_data1);
+        // Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+        imagebox1.innerHTML = `<img src="${url1}" id="image1" style="width:100%;">`;
+        // Storing that cropping view image in a variable
+        const image1 = document.getElementById("image1");
+        // Displaying the image box
+        document.getElementById("image-box1").style.display = "block";
+        // Displaying the Crop buttton
+        document.getElementById("crop-btn1").style.display = "block";
+        // Hiding the Post button
+        document.getElementById("myFile1").style.display = "block";
+        const cropper1 = new Cropper(image1, {
+            autoCropArea: 1,
+            viewMode: 1,
+            scalable: false,
+            zoomable: false,
+            movable: false,
+            minCropBoxWidth: 50,
+            minCropBoxHeight: 50,
+        });
+        // When crop button is clicked this event will get triggered
+        crop_btn1.addEventListener("click", () => {
+            // This method coverts the selected cropped image on the cropper canvas into a blob object
+            cropper1.getCroppedCanvas().toBlob((blob) => {
+                // Gets the original image data
+                let fileInputElement1 = document.getElementById("myFile1");
+                // Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+                let file1 = new File([blob], img_data1.name, {
+                    type: "image/*",
+                    lastModified: new Date().getTime(),
+                });
+                // Create a new container
+                let container1 = new DataTransfer();
+                // Add the cropped image file to the container
+                container1.items.add(file1);
+                // Replace the original image file with the new cropped image file
+                fileInputElement1.files = container1.files;
+                document.getElementById("myFile1").src = URL.createObjectURL(
+                    fileInputElement1.files[0]
+                );
+                // Hide the cropper box
+                document.getElementById("image-box1").style.display = "none";
+                // Hide the crop button
+                document.getElementById("crop-btn1").style.display = "none";
+
+            });
+        });
+    });
+</script>
+
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.js"
+    integrity="sha512-ZK6m9vADamSl5fxBPtXw6ho6A4TuX89HUbcfvxa2v2NYNT/7l8yFGJ3JlXyMN4hlNbz0il4k6DvqbIW5CCwqkw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}

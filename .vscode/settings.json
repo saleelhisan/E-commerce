@@ -1,0 +1,15 @@
+{
+    "workbench.colorCustomizations": {
+    "[Monokai]": {
+        "editor.background": "#000000",
+        "editorGutter.background": "#1b1a1a",
+        "sideBar.background": "#000000",
+        "activityBar.background": "#232323",
+        "statusBar.background": "#000000",
+        "editor.selectionBackground": "#070707",
+        "editor.lineHighlightBackground": "#000000",
+        "tab.activeBackground": "#000000",
+        "tab.inactiveBackground": "#393939",
+    }
+    }
+} 

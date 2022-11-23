@@ -1,0 +1,367 @@
+{{!-- <div class="ml-auto" style="width:74%"> --}}
+    <div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">My Profile</h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                {{!-- <li class="breadcrumb-item"><a href="#">Shop</a></li> --}}
+                <li class="breadcrumb-item active" aria-current="page"><a href="#">profile</a></li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-12 mt-5">
+                <!-- ANOTHER PROFILE VIEW -->
+                <section class="container mt-5 mb-5">
+                    <div class="row">
+                        <div class="col-md-4 ">
+                            <div class="shadow rounded p-3 text-center rounded">
+                                <img class="userProfile mx-auto" style="width: 100px; height: 100px;"
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_hYkbPJqI-VSDeSmelPL9ubOlhxv3ItmBXmsq7U-Nc_y4rZ4BtsX0vjEOeZEAQ2a1aDM&usqp=CAU"
+                                    alt="">
+                                <h5 class="mt-3">{{userdetails.name}}<span class="ms-2"></span>
+                                </h5>
+                            </div>
+
+                            <div class="shadow rounded mt-3 p-3">
+                                <h6 class="fw-normal"><a href="#address" class="text-white btn "
+                                        style="width: 30rem; height:4rem;border-radius: 100px; background: rgb(0, 2, 49)">Address</a>
+                                </h6>
+                                {{!-- <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Address
+                                </button> --}}
+                                <h6 class="fw-normal"><a href="/orders" class="text-white btn "
+                                        style="width: 30rem; height:4rem;border-radius: 100px; background: #333">My
+                                        Orders </a>
+                                </h6>
+                                <h6 class="fw-normal"><a href="#addaddress" class="text-white btn "
+                                        style="width: 30rem;height:4rem; border-radius: 100px; background: #333">Add
+                                        New
+                                        Address
+                                    </a>
+                                </h6>
+                                
+
+
+                                <button type="button"
+                                    style="width: 30rem;height:4rem; border-radius: 100px;  background: #333"
+                                    class="fw-normal text-white" data-toggle="modal" data-target="#exampleModal">
+                                    Change Password
+                                </button>
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-8 ">
+                            <div class="shadow p-3 rounded">
+                                <table class="table table-borderless ">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2" class="border-0">
+                                                <h3>Profile Details</h3>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <form action="/edit-profile" method="post">
+                                            <tr>
+                                                <td class="border-0 text-dark mb-1" width="30%">User Name
+                                                </td>
+                                                <td class="border-0 text-dark"> <span class="ms-2">
+                                                        {{!-- <input type="text" style="outline: none;" name="username"
+                                                            id="Fname" value="{{user.username}}" required> --}}
+                                                        <input type="text" name="name" value="{{userdetails.name}}"
+                                                            id="form2Example1" class="form-control form-control-lg"
+                                                            required />
+                                                    </span> </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-dark mb-1">Email</td>
+                                                <td class="text-dark"> <span class="ms-2">
+                                                        {{!-- <input type="email" style="outline: none;" name="email"
+                                                            id="Lname" value="{{user.email}}" required> --}}
+                                                        <input type="text" name="email" value="{{userdetails.email}}"
+                                                            id="form2Example2" class="form-control form-control-lg"
+                                                            required />
+                                                    </span></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-dark mb-1">Mobile Number</td>
+                                                <td class="text-dark"> <span class="ms-2">
+
+                                                        <input type="number" name="mobile"
+                                                            value="{{userdetails.mobile}}" id="form2Example3"
+                                                            class="form-control form-control-lg" required />
+                                                    </span></td>
+                                                <input type="text" name="_id" value="{{userdetails._id}}"
+                                                    id="form2Example4" class="form-control d-none form-control-lg"
+                                                    required />
+                                            </tr>
+                                            <tr>
+                                                <td class=" text-center pt-3 d-none" colspan="2">
+                                                    <button class="btn btn-outline-warning" type="submit">Edit &
+                                                        Update</button>
+                                                </td>
+                                            </tr>
+                                        </form>
+                                    </tbody>
+                                </table>
+                            </div>
+                            {{!-- <div class="address ml-5 ">
+                                <ul> {{this.name}},{{this.address}}, {{this.town}}, {{this.district}},
+                                    {{this.state}},{{this.pincode}},
+                                    {{this.phone}}<button class="btn btn-primary"
+                                        onclick="deleteAddress({{@index}},'{{../profileData._id}}')">delete</button>
+                                </ul>
+                            </div>
+                        </div> --}}
+                    </div>
+            </div>
+            <div id="address" class="ps-3 pt-3 overflow-auto " style="width: 100%; height: auto; ">
+                <h2 class="btn-lg shadow me-3 text-center text-white " style="background: rgb(22, 18, 59);"> Addresses
+                </h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each userdetails.address}}
+                        <tr>
+                            <th scope="row">{{@index}}</th>
+                            <td>name: {{this.name}}<br>Address: {{this.address}}<br>Town: {{this.town}}<br>district:
+                                {{this.district}}<br>state: {{this.state}}<br>PIN: {{this.pincode}}<br>Mobile:
+                                {{this.phone}}
+                            </td>
+                            <td><a onclick="deleteAddress(event)" href="/delete-address/{{this.id}}"><i
+                                        class="fa fa-trash fa-3x" aria-hidden="true"></i></a></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <section id="addaddress">
+                <h5 class="btn-lg shadow me-3 text-center text-white"
+                    style="letter-spacing: 1px; background: rgb(0, 2, 49)">Add Address</h5>
+
+                <form action="/add-address" method="post" id="checkout-form">
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <input type="text" class="form-control mb-3 d-none" name="id" id="id" value=""
+                                placeholder="Name">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <input type="text" class="form-control mb-3" name="name" id="name" value=""
+                                placeholder="Name" onkeyup="validateName()">
+                            <span id="name-error"></span>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <input type="text" class="form-control mb-3" name="address" id="street_address"
+                                placeholder="Address" value="" onkeyup="validateAddress()">
+                            <span id="address-error"></span>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <input type="text" class="form-control mb-3" name="town" id="town" placeholder="Town"
+                                value="" onkeyup="validateTown()">
+                            <span id="town-error"></span>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <input type="text" class="form-control mb-3" name="district" id="district"
+                                placeholder="District" value="" onkeyup="validateDistrict()">
+                            <span id="district-error"></span>
+                        </div>
+                        {{!-- <div class="col-md-12 mb-3">
+                            <select class="w-100" class="form-control" aria-placeholder="State" id="country">
+                                <option disable</option>
+                                <option>fghj</option>
+
+                            </select>
+                        </div> --}}
+                        <div class="col-12 mb-3">
+                            <input type="text" class="form-control mb-3" name="state" id="state" placeholder="State"
+                                value="" onkeyup="validateState()">
+                            <span id="state-error"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <input type="text" class="form-control mb-3" id="pincode" name="pincode"
+                                placeholder="Pin Code" value="" onkeyup="validatePincode()">
+                            <span id="pincode-error"></span>
+
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <input type="number" class="form-control mb-3" name="phone" id="phone" min="0"
+                                placeholder="Phone No" value="" minlength="10" maxlength="10"
+                                onkeyup="validateMobile()">
+                            <span id="mobile-error"></span>
+                        </div>
+
+                    </div>
+                    <div>
+                        <button onsubmit="formSubmit()" class="btn btn-outline-warning w-100" type="submit">Add
+                            Address</button>
+                    </div>
+
+                </form>
+            </section>
+        </div>
+        </section>
+    </div>
+</div>
+</div>
+</div>
+
+
+
+<!-- Modal -->
+{{!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog d-flex justify-content-center">
+        <div class="modal-content w-75">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form action="/change-password" method="post" id="changePassword">
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <i class="fa fa-lock prefix grey-text"></i>
+                        <input type="password" id="old" class="form-control" name="password"
+                            placeholder="Old password" />
+                        <label class="form-label" for="">Old Password</label>
+                    </div>
+
+                    <!-- password input -->
+                    <div class="form-outline mb-4">
+                        <i class="fa fa-lock prefix grey-text"></i>
+                        <input type="password" id="new" class="form-control" name="newpassword"
+                            placeholder="New Password" />
+                        <label class="form-label" for="">New Password</label>
+                    </div>
+
+                    <!-- Submit button -->
+                    {{!-- <button type="submit" class="btn btn-primary btn-block">Login</button> --}}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> --}}
+<!-- Modal -->
+<!-- Modal-for-change-password -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: rgb(0, 2, 49)">
+                <h5 class="modal-title text-white ml-auto" id="exampleModalLabel">Change Password</h5>
+                <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/change-password" method="post" id="changePassword">
+
+                    <div class="form-outline mb-3">
+
+                        <label class="form-label text-center" for="form2Example27">Enter your Password</label>
+                        <input type="password" name="password" id="form2Example27" class="form-control form-control-lg"
+                            required />
+                    </div>
+                    <div class="form-outline mb-3">
+                        <label class="form-label" for="form2Example27">New Password</label>
+                        <input type="password" name="newpassword" id="form2Example27"
+                            class="form-control form-control-lg" required />
+                    </div>
+                    {{!-- <button class="btn btn-danger" type="submit">Update</button> --}}
+            </div>
+            <div class="modal-footer">
+                {{!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+                <input type="submit" class="btn btn-outline-warning">
+               
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal-for-change-password-end -->
+
+
+<script>
+    let uniqueId = Date.now()
+    console.log(uniqueId)
+    document.getElementById("id").value = uniqueId;
+</script>
+<script>
+    function Update() {
+        let fname = document.getElementById('Fname').value
+        let lname = document.getElementById('Lname').value
+        let email = document.getElementById('Email').value
+        let number = document.getElementById('Number').value
+
+        $.ajax({
+            url: '/user/Profile',
+            method: 'post',
+            data: {
+                firstName: fname,
+                LastName: lname,
+                email: email,
+                number: number,
+            },
+            success: (Response) => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "profile Updated",
+                    showConfirmButton: false,
+                    timer: 1000,
+                });
+                location.reload();
+            }
+        })
+
+    }
+
+    function deleteAddress(event) {
+        event.preventDefault();
+        var link = event.currentTarget.href;
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to delete ",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Item deleted.',
+                    'success'
+                ).then(() => {
+                    window.location = link;
+                })
+            }
+            else {
+                return false;
+            }
+        })
+    }
+</script>

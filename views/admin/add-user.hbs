@@ -1,0 +1,32 @@
+<body>
+    <section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form action="/admin/add-user" method="post">
+                {{#if addUserError}}
+                    <div class="alert alert-danger">
+                        <strong>{{addUserError}}</strong>
+                    </div>
+                    {{/if}}
+                    <div class="form-group">
+                        <h2>ADD USER PAGE</h2>
+                        <label for="name">Full name</label>
+                        <input type="text" name="name" class="form-control" id="name"  placeholder="Enter name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="form-control" id="email"  placeholder="Enter email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control" id="password"  placeholder="Enter password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    </section>
+</body>

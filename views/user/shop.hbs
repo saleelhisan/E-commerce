@@ -1,0 +1,443 @@
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
+        <div class="container-fluid">
+            <h1 class="page-title">Shop Now</h1>
+        </div><!-- End .container-fluid -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">products</li>
+            </ol>
+        </div><!-- End .container-fluid -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="toolbox">
+                <ul class="nav nav-pills justify-content-around" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" id="trendy-all-link" data-toggle="tab" href="/shop" role="tab" aria-controls="trendy-all-tab" aria-selected="true">All</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="trendy-fur-link" data-toggle="tab" href="/filter?filterby=fiction" role="tab" aria-controls="trendy-fur-tab" aria-selected="false">Fiction</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="trendy-decor-link" data-toggle="tab" href="/filter?filterby=novel" role="tab" aria-controls="trendy-decor-tab" aria-selected="false">Novel</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="trendy-light-link" data-toggle="tab" href="/filter?filterby=self help" role="tab" aria-controls="trendy-light-tab" aria-selected="false">Self Help</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="trendy-light-link" data-toggle="tab" href="/filter?filterby=biography" role="tab" aria-controls="trendy-light-tab" aria-selected="false">Biography</a>
+                        </li>
+                    </ul>                  
+            </div>
+                <div class="toolbox-right">
+
+                    <div class="toolbox-sort">
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                sort 
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="/sort?sortby=low"><p>Price : low to high</p></a></li>
+                                <li><a class="dropdown-item" href="/sort?sortby=high"><p>Price : high to low</p></a></li>
+                            </ul>
+                        </div>
+                        {{!-- <label for="sortby">Sort by:</label>
+                        <div class="select-custom">
+                            <form action="/sort" method="post">
+                                <select name="sortby" id="sortby" class="form-control">
+                                    <option value="Pricelow" selected="selected">Price : low to hight</option>
+                                    <option value="Pricehigh">price : hight to low</option>
+                                </select>
+                                <button type="submit">apply</button>
+                            </form>
+                        </div> --}}
+                    </div><!-- End .toolbox-sort -->
+                </div><!-- End .toolbox-right -->
+            </div><!-- End .toolbox -->
+
+            <div class="products">
+                <div class="row">
+                    {{#each allProducts}}
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
+                        <div class="product">
+                            <figure class="product-media">
+                                {{#if catOfferPercentage}}
+                                <span class="product-label label-new" style="size: 1.5rem;">{{catOfferPercentage}} %off</span>
+                                {{/if}}
+
+                                
+                                {{#if noStock}}
+                                <a href="/product/{{this._id}}">
+                                    <img src="/product-image/{{this._id}}1.jpg" style="opacity: 0.5;" alt="Product image"
+                                        class="product-image">
+                                        <div class="nostock"><div class="bg-white"><strong class="text-danger ps-1 pe-1">Out of stock</strong></div></div>
+                                </a>
+
+                                {{else}}
+                                <a href="/product/{{this._id}}">
+                                    <img src="/product-image/{{this._id}}1.jpg" alt="Product image"
+                                        class="product-image">
+                                </a>
+                                {{/if}}
+
+                                <div class="product-action-vertical">
+                                    {{#if ../user}}
+                                    <a class="btn-product-icon btn-wishlist btn-expandable" id="{{this._id}}"
+                                        onclick="addToWishlist('{{this._id}}')"><span>add to
+                                            wishlist</span></a>
+                                    {{else}}
+                                    <a class="btn-product-icon btn-wishlist btn-expandable" 
+                                        href="/login"><span>add to
+                                            wishlist</span></a>
+                                    {{/if}}
+                                </div><!-- End .product-action -->
+
+                                <div class="product-action action-icon-top" style="background: white">
+                                    {{!-- <a href="/add-to-cart/{{this._id}}" class="btn-product btn-cart"><span>add to
+                                            cart</span></a> --}}
+                                            
+                                    {{#if ../user}}
+
+                                    {{#if noStock}}
+                                <button type="button" onclick="outOfStock()" class="btn-product btn-cart"><span>Add to cart</span></button>
+                                    
+                                    
+                                    {{else}}
+                                    <a onclick="addToCart('{{this._id}}')" class="btn-product btn-cart"><span>add
+                                            to cart</span></a>
+                                    {{/if}}
+
+
+                                    {{else}}
+
+                                    <a href="/login" class="btn-product btn-cart"><span>add
+                                            to cart</span></a>
+                                    {{/if}}
+                                    {{!-- <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                        title="Quick view"><span>quick view</span></a> --}}
+                                    {{!-- <a href="#" class="btn-product btn-compare"
+                                        title="Compare"><span>compare</span></a> --}}
+                                </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
+
+                           <div class="product-body">
+                                <div class="product-cat text-center">
+                                    Category : <strong><a href="#">{{this.category}}</a></strong>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title text-center"><a href="product.html">{{this.name}}</a></h3>
+                                <!-- End .product-title -->
+                                {{!-- <div class="product-price">
+                                    ₹{{this.price}}
+                                </div><!-- End .product-price --> --}}
+                                 {{!-- <div class="product-price justify-content-between">
+                                    <p>{{#if actualPrice}} <b> <span class="new-price">₹ {{this.price}}</span> </b>
+                                    <span>
+                                    {{#if catOfferPercentage }} <p class="product-price text-center text-success  border border-success rounded">{{catOfferPercentage}}<small>%off</small></p>{{/if}}
+                                        
+                                    <del class="text-danger">₹ {{this.actualPrice}}</del></span>{{else}} <span class="product-price text-center"><strong>₹ {{this.price}}</strong></span>{{/if}}</p>
+
+                                </div> --}}
+                                <div class="product-price d-flex justify-content-between">
+
+                                    {{#if actualPrice}}
+                                    <div><b> <span class="new-price">₹ {{this.price}}</span> </b></div>
+                                    <div>{{#if catOfferPercentage}}<p class="product-price text-center text-success  border border-success rounded">{{catOfferPercentage}}<small>%off</small></p>{{/if}}</div>
+                                    <div><del class="text-danger">₹ {{this.actualPrice}}</del></div>
+                                    {{else}}
+                                    <div><b> <span class="new-price">₹ {{this.price}}</span> </b></div>
+                                    <div></div>
+                                    <div></div>
+                                    {{/if}}
+
+                                </div>
+                                
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                    </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                    {{/each}}
+                    {{#each sortedProducts}}
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
+                        <div class="product">
+                            <figure class="product-media">
+                                {{#if catOfferPercentage}}
+                                <span class="product-label label-new" style="size: 1.5rem;">{{catOfferPercentage}} %off</span>
+                                {{/if}}
+
+                                
+                                {{#if noStock}}
+                                <a href="/product/{{this._id}}">
+                                    <img src="/product-image/{{this._id}}1.jpg" style="opacity: 0.5;" alt="Product image"
+                                        class="product-image">
+                                        <div class="nostock"><div class="bg-white"><strong class="text-danger ps-1 pe-1">Out of stock</strong></div></div>
+                                </a>
+
+                                {{else}}
+                                <a href="/product/{{this._id}}">
+                                    <img src="/product-image/{{this._id}}1.jpg" alt="Product image"
+                                        class="product-image">
+                                </a>
+                                {{/if}}
+
+                                <div class="product-action-vertical">
+                                    {{#if ../user}}
+                                    <a class="btn-product-icon btn-wishlist btn-expandable" id="{{this._id}}"
+                                        onclick="addToWishlist('{{this._id}}')"><span>add to
+                                            wishlist</span></a>
+                                    {{else}}
+                                    <a class="btn-product-icon btn-wishlist btn-expandable" 
+                                        href="/login"><span>add to
+                                            wishlist</span></a>
+                                    {{/if}}
+                                </div><!-- End .product-action -->
+
+                                <div class="product-action action-icon-top" style="background: white">
+                                    {{!-- <a href="/add-to-cart/{{this._id}}" class="btn-product btn-cart"><span>add to
+                                            cart</span></a> --}}
+                                            
+                                    {{#if ../user}}
+
+                                    {{#if noStock}}
+                                <button type="button" onclick="outOfStock()" class="btn-product btn-cart"><span>Out of stock</span></button>
+                                    
+                                    
+                                    {{else}}
+                                    <a onclick="addToCart('{{this._id}}')" class="btn-product btn-cart"><span>add
+                                            to cart</span></a>
+                                    {{/if}}
+
+
+                                    {{else}}
+
+                                    <a href="/login" class="btn-product btn-cart"><span>add
+                                            to cart</span></a>
+                                    {{/if}}
+                                    {{!-- <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                        title="Quick view"><span>quick view</span></a> --}}
+                                    {{!-- <a href="#" class="btn-product btn-compare"
+                                        title="Compare"><span>compare</span></a> --}}
+                                </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
+
+                           <div class="product-body">
+                                <div class="product-cat text-center">
+                                    Category : <strong><a href="#">{{this.category}}</a></strong>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title text-center"><a href="product.html">{{this.name}}</a></h3>
+                                <!-- End .product-title -->
+                                {{!-- <div class="product-price">
+                                    ₹{{this.price}}
+                                </div><!-- End .product-price --> --}}
+                                 {{!-- <div class="product-price justify-content-between">
+                                    <p>{{#if actualPrice}} <b> <span class="new-price">₹ {{this.price}}</span> </b>
+                                    <span>
+                                    {{#if catOfferPercentage }} <p class="product-price text-center text-success  border border-success rounded">{{catOfferPercentage}}<small>%off</small></p>{{/if}}
+                                        
+                                    <del class="text-danger">₹ {{this.actualPrice}}</del></span>{{else}} <span class="product-price text-center"><strong>₹ {{this.price}}</strong></span>{{/if}}</p>
+
+                                </div> --}}
+                                <div class="product-price d-flex justify-content-between">
+
+                                    {{#if actualPrice}}
+                                    <div><b> <span class="new-price">₹ {{this.price}}</span> </b></div>
+                                    <div>{{#if catOfferPercentage}}<p class="product-price text-center text-success  border border-success rounded">{{catOfferPercentage}}<small>%off</small></p>{{/if}}</div>
+                                    <div><del class="text-danger">₹ {{this.actualPrice}}</del></div>
+                                    {{else}}
+                                    <div><b> <span class="new-price">₹ {{this.price}}</span> </b></div>
+                                    <div></div>
+                                    <div></div>
+                                    {{/if}}
+
+                                </div>
+                                
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                    </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                    {{/each}}
+
+
+
+                    {{#each filtered}}
+                    <div class="col-6 col-md-4 col-lg-4 col-xl-3 col-xxl-2">
+                        <div class="product">
+                            <figure class="product-media">
+                                {{#if catOfferPercentage}}
+                                <span class="product-label label-new" style="size: 1.5rem;">{{catOfferPercentage}} %off</span>
+                                {{/if}}
+
+                                
+                                {{#if noStock}}
+                                <a href="/product/{{this._id}}">
+                                    <img src="/product-image/{{this._id}}1.jpg" style="opacity: 0.5;" alt="Product image"
+                                        class="product-image">
+                                        <div class="nostock"><div class="bg-white"><strong class="text-danger ps-1 pe-1">Out of stock</strong></div></div>
+                                </a>
+
+                                {{else}}
+                                <a href="/product/{{this._id}}">
+                                    <img src="/product-image/{{this._id}}1.jpg" alt="Product image"
+                                        class="product-image">
+                                </a>
+                                {{/if}}
+
+                                <div class="product-action-vertical">
+                                    {{#if ../user}}
+                                    <a class="btn-product-icon btn-wishlist btn-expandable" id="{{this._id}}"
+                                        onclick="addToWishlist('{{this._id}}')"><span>add to
+                                            wishlist</span></a>
+                                    {{else}}
+                                    <a class="btn-product-icon btn-wishlist btn-expandable" 
+                                        href="/login"><span>add to
+                                            wishlist</span></a>
+                                    {{/if}}
+                                </div><!-- End .product-action -->
+
+                                <div class="product-action action-icon-top" style="background: white">
+                                    {{!-- <a href="/add-to-cart/{{this._id}}" class="btn-product btn-cart"><span>add to
+                                            cart</span></a> --}}
+                                            
+                                    {{#if ../user}}
+
+                                    {{#if noStock}}
+                                    <button type="button" onclick="outOfStock()" class="btn-product btn-cart"><span>Add to cart</span></button>
+                                    
+                                    
+                                    {{else}}
+                                    <a onclick="addToCart('{{this._id}}')" class="btn-product btn-cart"><span>add
+                                            to cart</span></a>
+                                    {{/if}}
+
+
+                                    {{else}}
+
+                                    <a href="/login" class="btn-product btn-cart"><span>add
+                                            to cart</span></a>
+                                    {{/if}}
+                                    {{!-- <a href="popup/quickView.html" class="btn-product btn-quickview"
+                                        title="Quick view"><span>quick view</span></a> --}}
+                                    {{!-- <a href="#" class="btn-product btn-compare"
+                                        title="Compare"><span>compare</span></a> --}}
+                                </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
+
+                           <div class="product-body">
+                                <div class="product-cat text-center">
+                                    Category : <strong><a href="#">{{this.category}}</a></strong>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title text-center"><a href="product.html">{{this.name}}</a></h3>
+                                <!-- End .product-title -->
+                                {{!-- <div class="product-price">
+                                    ₹{{this.price}}
+                                </div><!-- End .product-price --> --}}
+                                 {{!-- <div class="product-price justify-content-between">
+                                    <p>{{#if actualPrice}} <b> <span class="new-price">₹ {{this.price}}</span> </b>
+                                    <span>
+                                    {{#if catOfferPercentage }} <p class="product-price text-center text-success  border border-success rounded">{{catOfferPercentage}}<small>%off</small></p>{{/if}}
+                                        
+                                    <del class="text-danger">₹ {{this.actualPrice}}</del></span>{{else}} <span class="product-price text-center"><strong>₹ {{this.price}}</strong></span>{{/if}}</p>
+
+                                </div> --}}
+                                <div class="product-price d-flex justify-content-between">
+
+                                    {{#if actualPrice}}
+                                    <div><b> <span class="new-price">₹ {{this.price}}</span> </b></div>
+                                    <div>{{#if catOfferPercentage}}<p class="product-price text-center text-success  border border-success rounded">{{catOfferPercentage}}<small>%off</small></p>{{/if}}</div>
+                                    <div><del class="text-danger">₹ {{this.actualPrice}}</del></div>
+                                    {{else}}
+                                    <div><b> <span class="new-price">₹ {{this.price}}</span> </b></div>
+                                    <div></div>
+                                    <div></div>
+                                    {{/if}}
+
+                                </div>
+                                
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                    </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                    {{/each}}
+
+
+                </div><!-- End .row -->
+
+                <div class="load-more-container text-center">
+                    <a href="#" class="btn btn-outline-darker btn-load-more">More Products <i
+                            class="icon-refresh"></i></a>
+                </div><!-- End .load-more-container -->
+            </div><!-- End .products -->
+
+            <div class="sidebar-filter-overlay"></div><!-- End .sidebar-filter-overlay -->
+            <aside class="sidebar-shop sidebar-filter">
+                <div class="sidebar-filter-wrapper">
+
+                    <div class="widget widget-clean">
+                        <label><i class="icon-close"></i>Filters</label>
+                        <a href="#" class="sidebar-filter-clear">Clean All</a>
+                    </div><!-- End .widget -->
+                    <div class="widget widget-collapsible">
+                        <h3 class="widget-title">
+                            <label for="cars">Filter by:</label>
+
+                        </h3><!-- End .widget-title -->
+
+                    </div><!-- End .widget -->
+
+                </div><!-- End .sidebar-filter-wrapper -->
+            </aside><!-- End .sidebar-filter -->
+        </div><!-- End .container-fluid -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+<script>
+     function outOfStock(){
+        swal.fire({
+            title:'Oops',
+            icon:"warning",
+            text:"Product is out of stock"
+        })
+    }
+</script>
+{{!--
+<script>
+    function addToWishlist(proId) {
+        $.ajax({
+            url: '/add-to-wishlist/' + proId,
+            method: 'get',
+            success: (response) => {
+                if (response.status) {
+                    Swal.fire(
+                        'Good job!',
+                        'Item added to wishlist',
+                        'success'
+                    )
+                    console.log('bg change')
+                    document.getElementById(proId).style.color = "red";
+                } else {
+                    Swal.fire(
+                        'Deleted!',
+                        'Item deleted from wishlist',
+                        'warning'
+                    )
+                    document.getElementById(proId).style.color = "grey";
+                }
+            }
+
+        })
+    }
+
+</script> --}}
+
+<style>
+    .nostock {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>

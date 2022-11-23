@@ -1,0 +1,313 @@
+<link href="/assets/css/bootstrap-2.min.css" rel="stylesheet">
+
+<!-- Template Stylesheet -->
+<link href="/assets/css/style3.css" rel="stylesheet">
+<div class="container-fluid position-relative d-flex p-0">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-12 mt-5">
+                <div class="container-fluid">
+                    <div class="row">
+                        {{!-- <a href="/admin/add-product" class="btn btn-dark ml-auto mb-4" style="width: 130px;">Add
+                            Product</a> --}}
+                    </div>
+                </div>
+                <div style="overflow-x: scroll;">
+                    <table class="table" id="viewusers">
+                        <thead class="bg-warning">
+                            <tr>
+                                <th scope="col">No</th>
+                                {{!-- <th scope="col">Coupen Name</th> --}}
+                                <th scope="col">Category</th>
+                                <th scope="col">Offer</th>
+
+                                <th scope="col">Start</th>
+                                <th scope="col">Expiry</th>
+                                {{!-- <th scope="col">Percentage</th> --}}
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+
+                                {{!-- <th scope="col">Status</th> --}}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each CatOffers}}
+                            <tr>
+                                <th scope="row" class="fs-bold">{{inc @index}}</th>
+                                <td>{{this.category}}</td>
+                                <td>{{this.catOfferPercentage}}</td>
+                                <td>{{this.starting}}</td>
+                                <td>{{this.expiry}}</td>
+                                {{!-- <td><img style="height: 50px;width:50px;" src="/product-images/{{this._id}}1.jpg"
+                                        alt="">
+                                </td> --}}
+                                <td><a href="/admin/edit-catOffer/{{this._id}}"><i class="fa fa-edit fa-2x text-dark"
+                                            aria-hidden="true"></i></a></td>
+                                {{!-- {{#if this.isActive}}
+                                <td><a href="/admin/deactivate-product/{{this._id}}"><i
+                                            class="fa fa-toggle-on fa-3x text-danger" aria-hidden="true"
+                                            onclick="return confirm('Are you sure want to Delete {{this.name}} Product')"></i></a>
+                                </td>
+                                {{else}}
+
+                                <td><a href="/admin/activate-product/{{this._id}}"><i
+                                            class="fa fa-toggle-off fa-3x text-danger" aria-hidden="true"
+                                            onclick="return confirm('Are you sure want to Delete {{this.name}} Product')"></i></a>
+                                </td>
+                                {{/if}} --}}
+                                <td class=""><a onclick="deleteProduct(event)"
+                                        href="/admin/delete-catOffer/{{this._id}}"><i
+                                            class="fa fa-trash fa-2x text-secondary" aria-hidden="true"></i></a>
+                                </td>
+
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <section id="add" class="p-5">
+            <div class="half">
+                <div class="bg order-1 order-md-2" style="background-image: url('/adminLogin/images/bg_1.jpg');"></div>
+
+                <div class="contents order-2 order-md-1">
+                    <div class="container">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-block" id="cat">
+                                        <div class="text-center mb-5">
+                                            <h1><u>Add new <strong>Offers</strong></u></h1>
+                                            {{#if catErr}}
+                                            <p class="text-center text-danger">{{catErr}}</p>
+                                            {{/if}}
+                                        </div>
+                                        {{!-- <form action="/admin/add-coupon" id="productPage" method="post"> --}}
+                                            {{!-- {{#if couponExist}}
+                                            <p class="text-danger">{{couponExist}}</p>
+                                    </div>
+                                    {{/if}} --}}
+                                    {{!-- {{#if couponExist}}
+                                    <div class="alert alert-danger" role="alert">
+                                        This Coupon is already exist!
+                                    </div>
+                                    {{/if}} --}}
+                                    {{!-- <div class="form-group first">
+                                        <label>Coupon code</label>
+                                        <input type="text" class="form-control" required name="coupon">
+                                        <label class="pt-4">Starting Date</label>
+                                        <input type="Date" class="form-control" required name="starting" id="str">
+                                        <label class="pt-4">Expiry Date</label>
+                                        <input type="Date" class="form-control" required name="expiry" id="exp">
+                                        <label class="pt-4">Coupon Percentage</label>
+                                        <input type="text" class="form-control" required min="1" name="offer" max="95"
+                                            --}} {{!-- onkeypress="return isNumber(event)/" --}} {{!-->
+                                    </div>
+                                    <input type="submit" value="Add" id="prosub" class="btn btn-block btn-dark">
+
+                                    </form> --}}
+                                    <form action="/admin/category-offers" id="productPage" name="myForm" method="post"
+                                        onsubmit="return validateForm()">
+                                        {{#if proOfferExist}}
+                                        <div class="alert alert-danger" role="alert">
+                                            A offer for this product already Exist!
+                                        </div>
+                                        {{/if}}
+                                        <div class="form-group first">
+                                            <label for="proList" class="text-dark">Category List</label>
+                                            <input list="products" onkeyup="validateCategory()" name="category"
+                                                class="form-control" autocomplete="off" id="category"
+                                                placeholder="category">
+                                            <span id="category-error"></span>
+
+                                            <datalist id="products">
+                                                {{#each allCategories}}
+                                                <option value="{{this.name}}">
+                                                    {{/each}}
+                                            </datalist>
+                                            {{#if proErr}}
+                                            <p class="text-center text-danger">{{proErr}}</p>
+                                            {{/if}}
+                                            <label class="pt-4 text-dark">Starting Date</label>
+                                            <input type="Date" class="form-control" name="starting" id="startDate"
+                                                placeholder="starting date" required>
+                                            <label class="pt-4 text-dark">Expiry Date</label>
+                                            <input type="Date" class="form-control" name="expiry" id="endDate"
+                                                placeholder="expiry date" required>
+                                            <label class="pt-4 text-dark">Offer Percentage</label>
+                                            <span id="percentage-error"></span>
+                                            <input type="number" onkeyup="validatePercentage()" id="proOfferPercentage"
+                                                onkeypress="return isNumber(event)" class="form-control"
+                                                name="catOfferPercentage" placeholder="offer percentage">
+                                        </div>
+                                        <input type="submit" value="Add" id="prosub" class="btn btn-block btn-dark">
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </section>
+</div>
+</div>
+<script>
+    function addCateOffer(event) {
+        event.preventDefault();
+        var link = event.currentTarget.href;
+
+        Swal.fire({
+            title: 'Offer added',
+            text: "Category offer added",
+            icon: 'success',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes',
+            showConfirmButton: true
+
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Added',
+                    text: 'Category offer Added',
+                    icon: 'success',
+                    timer: 1000,
+                    showConfirmButton: true
+                }).then(() => {
+                    window.location = link;
+                })
+            }
+            else {
+                return false;
+            }
+        })
+    }
+</script>
+
+<script>
+    function deleteProduct(event) {
+        event.preventDefault();
+        var link = event.currentTarget.href;
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you want to Delete this Category Offer ",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Deleted',
+                    text: 'Category offer deleted',
+                    icon: 'success',
+                    timer: 1000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location = link;
+                })
+            }
+            else {
+                return false;
+            }
+        })
+    }
+</script>
+<script>
+    $("#startDate").on("change", function () {
+        $("#endDate").attr("min", $(this).val());
+    });
+</script>
+<script>
+    var percentageError = document.getElementById('percentage-error')
+    var categoryError = document.getElementById('category-error')
+
+    function validateCategory() {
+
+        var category = document.getElementById('category').value.trim();
+
+        if (category.length == 0) {
+            categoryError.innerHTML = 'category is Required';
+            categoryError.style.color = 'red';
+            return false;
+        }
+      
+        if (!category.match(/^[A-Za-z ]*$/)) {
+			categoryError.innerHTML = 'Write a proper name';
+			categoryError.style.color = 'red'
+			return false;
+		}
+        categoryError.innerHTML = '';
+        
+        return true;
+    }
+
+    function validatePercentage() {
+        var percentage = document.getElementById('proOfferPercentage').value.trim();
+
+        if (percentage.length == 0) {
+            percentageError.innerHTML = 'percentage is Required';
+            percentageError.style.color = 'red';
+            return false;
+        }
+        if(percentage < 1){
+            percentageError.innerHTML = 'enter value greater than 0';
+            percentageError.style.color = 'red';
+            return false;
+        }
+        if(isNaN(percentage)){
+            percentageError.innerHTML = 'enter percentage in number';
+            percentageError.style.color = 'red';
+            return false;
+        }
+
+        if (percentage > 85) {
+            percentageError.innerHTML = "Value must be less than 85";
+            percentageError.style.color = "red";
+            return false;
+        }
+
+        percentageError.innerHTML = 'percentage is valid';
+        percentageError.style.color = 'green';
+        return true;
+    }
+    $(document).on("submit", "form", function (e) {
+        if (validatePercentage() && validateCategory()) {
+            return true
+        } else {
+            e.preventDefault();
+            swal.fire('Invalid data!');
+            return false;
+        }
+    })
+</script>
+{{!--
+<script>
+    function validateForm() {
+        let x = document.myForm.catOfferPercentage.value;
+        let category = document.myForm.category.value
+
+        if (x == "") {
+            swal.fire("Data must be filled");
+            return false;
+        }
+        else if (category == "") {
+            swal.fire("category must be valid")
+            return false;
+        }
+    }
+</script> --}}
+{{#if catOfferExistError}}
+<script>
+    Swal.fire({
+        title: 'Offer Exists',
+        text: 'Offer exists on this category',
+        icon: 'warning',
+    })
+</script>
+{{/if}}

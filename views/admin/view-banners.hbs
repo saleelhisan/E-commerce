@@ -1,0 +1,69 @@
+<!-- ##### Main Content Wrapper End ##### -->
+{{!-- cart-table-area --}}
+{{!-- <div class="ml-auto" style="width:74%"> --}}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-12 mt-5">
+                <div class="container-fluid">
+                    <div class="row">
+                        <a href="/admin/add-banners" class="btn btn-dark ml-auto mb-4" style="width: 130px;">Add
+                            Banner</a>
+                    </div>
+                </div>
+                <table class="table" id="viewusers">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Image</th>
+
+                            <th scope="col">Name</th>
+                            <th scope="col">Title</th>
+                            {{!-- <th scope="col">Price</th> --}}
+                            <th scope="col">Description</th>
+                            {{!-- <th scope="col">Edit</th> --}}
+                            <th scope="col">Delete</th>
+
+                            {{!-- <th scope="col">Link</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each allbanners}}
+                        <tr>
+                            <th scope="row" class="fs-bold">{{inc @index}}</th>
+                            <td><img style="height: 50px;width:50px;" src="/banner-image/{{this._id}}.jpg" alt="">
+                            </td>
+                            <td>{{this.name}}</td>
+                            <td>{{this.title}}</td>
+                            <td>{{this.description}}</td>                           
+                            
+                            {{!-- <td><a href="/admin/edit-banner/{{this._id}}"><i class="fa  fa-pencil-square-o fa-3x"
+                                        aria-hidden="true"></i></a></td> --}}
+                            {{!-- {{#if this.isActive}} --}}
+                            <td><a href="/admin/delete-banner/{{this._id}}"><i class="fa fa-trash fa-2x text-danger"
+                                        aria-hidden="true"
+                                        onclick="return confirm('Are you sure want to Delete {{this.name}} Product')"></i></a>
+                            </td>
+                            {{!-- {{else}} --}}
+                            
+                            {{!-- <td><a href="/admin/activate-product/{{this._id}}"><i class="fa fa-toggle-off fa-3x text-danger"
+                                        aria-hidden="true"
+                                        onclick="return confirm('Are you sure want to Delete {{this.name}} Product')"></i></a>
+                            </td> --}}
+                            {{!-- {{/if}} --}}
+                            
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+{{!-- </div> --}}
+{{!-- data table ajax --}}
+<script>
+    $(document).ready(function () {
+        {{!-- $.noConflict(); --}}
+        $('#viewusers').DataTable();
+    });
+</script>

@@ -1,0 +1,280 @@
+{{!-- <section class="vh-100 bg-image"
+	style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+	<div class="mask d-flex align-items-center h-100 gradient-custom-3">
+		<div class="container h-100">
+			<div class="row d-flex justify-content-center align-items-center h-100">
+				<div class="col-12 col-md-9 col-lg-7 col-xl-6">
+					<div class="card" style="border-radius: 15px;">
+						<div class="card-body p-5">
+							<h2 class="text-uppercase text-center mb-5">Create an account</h2>
+
+							<form action="/signup" method="post" role="form">
+								{{#if signupError}}
+								<div class="alert alert-danger">
+									<strong>Email Already exist</strong>
+								</div>
+								{{/if}}
+								<div class="form-outline mb-4">
+									<input type="text" id="name" name="name" class="form-control form-control-lg"
+										required />
+									<label class="form-label" for="name">Your Name</label>
+								</div>
+
+								<div class="form-outline mb-4">
+									<input type="email" id="email" name="email" class="form-control form-control-lg"
+										required>
+									<label class="form-label" for="email">Your Email</label>
+								</div>
+
+								<div class="form-outline mb-4">
+									<input type="password" id="password" name="password"
+										class="form-control form-control-lg" required>
+									<label class="form-label" for="email">Password</label>
+								</div>
+
+								<div class="d-flex justify-content-center">
+									<button type="submit"
+										class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+								</div>
+
+								<p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/login"
+										class="fw-bold text-body"><u>Login here</u></a></p>
+
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section> --}}
+<div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
+	style="background-image: url('assets/images/backgrounds/login.jpg')">
+	<div class="container">
+		<div class="form-box">
+			<div class="form-tab">
+				<ul class="nav nav-pills nav-fill" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link active" id="signin-tab-2" href="/signup" role="tab"
+							aria-controls="signin-2">Signup</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" id="register-tab-2" href="/login" role="tab" aria-controls="register-2"
+							aria-selected="true">Login</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					{{!-- <div class="tab-pane fade" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
+						<form action="#">
+							<div class="form-group">
+								<label for="singin-email-2">Username or email address *</label>
+								<input type="text" class="form-control" id="singin-email-2" name="singin-email"
+									required>
+							</div><!-- End .form-group -->
+
+							<div class="form-group">
+								<label for="singin-password-2">Password *</label>
+								<input type="password" class="form-control" id="singin-password-2"
+									name="singin-password" required>
+							</div><!-- End .form-group -->
+
+							<div class="form-footer">
+								<button type="submit" class="btn btn-outline-primary-2">
+									<span>LOG IN</span>
+									<i class="icon-long-arrow-right"></i>
+								</button>
+
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="signin-remember-2">
+									<label class="custom-control-label" for="signin-remember-2">Remember Me</label>
+								</div><!-- End .custom-checkbox -->
+
+								<a href="#" class="forgot-link">Forgot Your Password?</a>
+							</div><!-- End .form-footer -->
+						</form>
+						<div class="form-choice">
+							<p class="text-center">or sign in with</p>
+							<div class="row">
+								<div class="col-sm-6">
+									<a href="#" class="btn btn-login btn-g">
+										<i class="icon-google"></i>
+										Login With Google
+									</a>
+								</div><!-- End .col-6 -->
+								<div class="col-sm-6">
+									<a href="#" class="btn btn-login btn-f">
+										<i class="icon-facebook-f"></i>
+										Login With Facebook
+									</a>
+								</div><!-- End .col-6 -->
+							</div><!-- End .row -->
+						</div><!-- End .form-choice -->
+					</div><!-- .End .tab-pane --> --}}
+					<div class="tab-pane fade show active" id="register-2" role="tabpanel"
+						aria-labelledby="register-tab-2">
+						<form action="/signup" method="post">
+							{{#if signupError}}
+							<div class="form-group alert alert-danger text-center">
+								<strong>{{signupError}}</strong>
+							</div>
+							{{/if}}
+							<div class="form-group">
+								<label for="register-email-2">Full Name</label>
+								<input type="text" class="form-control" id="contact-name" name="name"
+									onkeyup="validateName()">
+								<strong><span id="name-error"></span></strong>
+
+							</div>
+							<div class="form-group">
+								<label for="register-email-2">Your email address *</label>
+								<input type="email" class="form-control" id="contact-email" name="email"
+									onkeyup="validateEmail()">
+								<strong><span id="email-error"></span></strong>
+
+							</div><!-- End .form-group -->
+
+							<div class="form-group">
+								<label for="register-password-2">Password *</label>
+								<input type="password" class="form-control" id="register-email-2" name="password">
+								<strong><span id="password-error"></span></strong>
+
+							</div>
+
+							<div class="form-group">
+								<label for="register-email-2">Mobile number</label>
+								<input type="text" class="form-control" id="mobileno" name="mobile"
+									onkeyup="validateMobile()">
+								<strong><span id="mobile-error"></span></strong>
+
+							</div>
+							<div class="form-group">
+								<label for="register-email-2">Referral code</label>
+								<input type="text" class="form-control" id="referral" name="referral">
+							</div>
+
+							<div class="form-footer">
+								<button type="submit" class="btn btn-outline-primary-2 ml-auto">
+									<span>Signup</span>
+									<i class="icon-long-arrow-right"></i>
+								</button>
+
+								{{!-- <div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input" id="register-policy-2" required>
+									<label class="custom-control-label" for="register-policy-2">I agree to the <a
+											href="#">privacy policy</a> *</label>
+								</div><!-- End .custom-checkbox --> --}}
+							</div><!-- End .form-footer -->
+						</form>
+						<div class="form-choice">
+							<div class="text-center justify-content-center">
+
+
+								{{!-- <div class="col-sm-6">
+									<a href="#" class="btn btn-login btn-g">
+										<i class="icon-google"></i>
+										Login With Google
+									</a>
+								</div><!-- End .col-6 --> --}}
+								{{!-- <div class="col-sm-6">
+									<a href="#" class="btn btn-login  btn-f">
+										<i class="icon-facebook-f"></i>
+										Login With Facebook
+									</a>
+								</div><!-- End .col-6 --> --}}
+							</div><!-- End .row -->
+						</div><!-- End .form-choice -->
+					</div><!-- .End .tab-pane -->
+				</div><!-- End .tab-content -->
+			</div><!-- End .form-tab -->
+		</div><!-- End .form-box -->
+	</div><!-- End .container -->
+</div><!-- End .login-page section-bg -->
+<script>
+	var nameError = document.getElementById('name-error');
+	var emailError = document.getElementById('email-error');
+	var mobileError = document.getElementById('mobile-error');
+	var passwordError = document.getElementById('password-error');
+
+
+	function validateName() {
+		var name = document.getElementById('contact-name').value.trim();
+
+		if (name.length == 0) {
+			nameError.innerHTML = 'Name is Required';
+			nameError.style.color = 'red'
+			return false;
+		}
+
+		if (!name.match(/^[A-Za-z ]*$/)) {
+			nameError.innerHTML = 'Write a FullName';
+			nameError.style.color = 'red'
+			return false;
+		}
+		if (name.length < 3) {
+			nameError.innerHTML = 'enter minimum 3 charactors';
+			nameError.style.color = 'red'
+			return false;
+		}
+
+		nameError.innerHTML = 'Name is valid';
+		nameError.style.color = 'green'
+		return true;
+	}
+
+	function validateEmail() {
+		var email = document.getElementById('contact-email').value.trim();
+		if (email.length == 0) {
+			emailError.innerHTML = 'Email is Required';
+			emailError.style.color = 'red'
+			return false;
+		}
+
+		if (!email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+			emailError.innerHTML = 'Email is Invalid';
+			emailError.style.color = 'red'
+			return false;
+		}
+		emailError.innerHTML = 'Email is valid';
+		emailError.style.color = 'green'
+		return true;
+	}
+
+	function validateMobile() {
+		var mobile = document.getElementById('mobileno').value.trim();
+		var Required = 15;
+		var left = Required - mobile.length;
+
+		if (mobile.length == 0 || mobile.length < 10) {
+			mobileError.innerHTML = 'more character Required';
+			mobileError.style.color = 'red'
+			return false;
+		}
+		mobileError.innerHTML = 'Message is valid';
+		mobileError.style.color = 'green'
+		return true;
+	}
+
+	function validatePassword() {
+		var message = document.getElementById('password').value.trim();
+
+		if (message.length == 0 || message.length < 3) {
+			passwordError.innerHTML = 'more character Required';
+			passwordError.style.color = 'red'
+			return false;
+		}
+		passwordError.innerHTML = 'Message is valid';
+		passwordError.style.color = 'green'
+		return true;
+	}
+
+	$(document).on("submit", "form", function (e) {
+		if (validateName() && validateEmail() && validateMobile() && validatePassword()) {
+
+		} else {
+			e.preventDefault();
+			alert('Invalid data!');
+			return false;
+		}
+	});
+</script>

@@ -1,0 +1,130 @@
+<!-- ##### Main Content Wrapper End ##### -->
+{{!-- cart-table-area --}}
+{{!-- <div class="ml-auto" style="width:74%"> --}}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6 col-md-12">
+                <div class="container-fluid">
+                    <div class="row">
+                        {{!-- <a href="/admin/add-product" class="btn btn-dark ml-auto mb-4" style="width: 130px;">Add
+                            Product</a> --}}
+                    </div>
+                </div>
+                <table class="table table-striped" id="viewusers">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">DATE</th>
+                            <th scope="col"><input id="myInput" type="text" placeholder="Search..">CUSTOMER</th>
+                            {{!-- <th scope="col">Address</th> --}}
+                            <th scope="col">AMOUNT</th>
+                            <th scope="col">VIEW</th>
+                            <th scope="col">PAYMENT</th>
+                            <th scope="col">STATUS</th>
+                            <th scope="col">OPTIONS</th>
+                            <th scope="col">SELECT</th>
+
+
+
+                            {{!-- <th scope="col">Edit</th>
+                            <th scope="col">Delete</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+                        {{#each allOrderDetails}}
+                        <tr>
+                            <th scope="row" class="fs-bold">{{inc @index}}</th>
+                            <td>{{this.date}}</td>
+                            <td>{{this.deliveryDetails.name}}</td>
+                            {{!-- <td>{{this.deliveryDetails.address}}</td> --}}
+                            <td>{{this.totalAmount}}</td>
+                            <td><a href="/admin/view-order-products/{{this._id}}"><i class="fa fa-eye text-dark"></i></a></td>                          
+                            <td>{{this.paymentMethod}}</td>
+                            <td> <span class="" style="width:10rem ;" >{{this.status}}</span></td>
+
+                            {{!-- <td id="{{this._id}}">{{this.status}}</td> --}}
+                            <td>
+                                <form action="/admin/order-status" method="post" class="">
+                                    <input type="text" id="id" name="orderId" class="d-none" value="{{this._id}}">
+                                    <select name="status" id="cars" style="width:10rem ;" class="w-100 form-control">
+                                        <option name="" value="{{this.status}}">{{this.status}}</option>
+
+                                        {{#if this.isShipped}}
+                                        <option value="Out For Delivery">Out For Delivery</option>
+                                        <option value="cancelled">Cancel</option>
+                                        {{else if this.isDelivered}}
+                                        {{else if this.isCancelled}}
+                                        
+                                        {{else if this.isOutForDelivery}}
+                                        <option value="delivered">delivered</option>
+                                        {{else}}
+                                        <option value="placed">placed</option>
+                                        <option value="shipped">shipped</option>
+                                        <option value="Out For Delivery">Out For Delivery</option>
+                                        <option value="delivered">delivered</option>
+                                        <option value="pending">pending</option>
+                                        <option value="cancelled">Cancel</option>\
+                                        {{/if}}
+                                    </select></td>
+                                    <td>
+                                    <div>
+                                        {{#if this.isCancelled}}
+                                        <span  class="text-danger">Order cancelled</span>
+                                        {{else if this.isDelivered}}
+                                        <span  class="text-success">delivered Successfully</span>
+
+                                        {{else }}
+                                        <button type="submit" class="btn btn-secondary mt-2">Update</button>
+                                        {{/if}}
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{{!-- </div> --}}
+
+{{!-- data table ajax --}}
+<script>
+    {
+        {
+            !--
+            $(".order-status").submit((e) => {
+                let id = document.getElementById('id').value
+                console.log("haiii")
+                e.preventDefault()
+                $.ajax({
+                    url: '/admin/order-status',
+                    method: 'post',
+                    data: $(id).serialize(),
+                    success: (Response) => {
+                        alert(Response)
+                        console.log(Response)
+                        { { !--document.getElementById(response.orderId).innerHTML=Response.status-- } }
+
+                    }
+                })
+            })
+            --}
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        $('#viewusers').DataTable();
+    }); 
+</script>
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>

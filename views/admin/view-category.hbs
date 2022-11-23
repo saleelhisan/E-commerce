@@ -1,0 +1,50 @@
+<div class="ml-auto" style="width:74%">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-12 mt-5">
+                <div class="container-fluid">
+                    <div class="row">
+                        <a href="/admin/add-category" class="btn btn-dark ml-auto mb-4" style="width: 130px;">Add Category</a>
+                    </div>
+                </div>
+                <table class="table" id="viewusers">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            {{!-- <th scope="col">Category Id</th> --}}
+                            <th scope="col">Category Name</th>
+                            <th scope="col">Edit Category</th>
+                            <th scope="col">Delete Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each categories}}
+                        <tr>
+                        <th scope="row" class="fs-bold">{{inc @index}}</th>
+                        {{!-- <td>{{this._id}}</td> --}}
+                        <td>{{this.name}}</td>
+                        <td class="pl-5"><a href="/admin/edit-category/{{this._id}}"><i class="fa fa-edit fa-2x text-secondary"  aria-hidden="true"></i></a></td>
+                        <td class="pl-5"><a href="/admin/delete-category/{{this._id}}/{{this.name}}"><i class="fa fa-trash fa-2x text-danger"  aria-hidden="true" onclick="return confirm('Are you sure want to Delete {{this.name}} Category')"></i></a></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{{#if categoryproductexists}}
+<script>Swal.fire({
+        icon: "warning",
+        title: "Product exists in this category",
+    });
+</script>
+{{/if}}
+
+{{!-- data table ajax --}}
+<script>
+    $(document).ready( function () {
+        $.noConflict();
+    $('#viewusers').DataTable();
+} );
+</script>
