@@ -10,5 +10,4 @@ module.exports = {
     PRODUCT_OFFERS:'productoffer',
     CATEGORY_OFFERS:'categoryoffer',
     COUPON_COLLECTION:'coupon',
-
 }
