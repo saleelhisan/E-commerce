@@ -35,6 +35,9 @@ module.exports = {
             resolve(orderDetails[0]);
         });
     },
+
+
+
     doSignup: (userData) => {
         return new Promise(async (resolve, reject) => {
             let response = {}
@@ -113,7 +116,10 @@ module.exports = {
             }
 
         })
-    },                                                                //inserting data to the database  
+    },
+
+
+    //inserting data to the database  
     doLogin: (userData) => {
         let response = {}
         return new Promise(async (resolve, reject) => {
@@ -144,6 +150,9 @@ module.exports = {
 
 
     },
+
+
+
     isBlockedUser: (emailId) => {
         return new Promise(async (resolve, reject) => {
             await db.get().collection('user').findOne({ email: emailId }).then((response) => {
@@ -151,6 +160,9 @@ module.exports = {
             })
         })
     },
+
+
+
     checkMobile: (data) => {
         return new Promise(async (resolve, reject) => {
             await db.get().collection('user').findOne({ mobile: data }).then((response) => {
@@ -158,6 +170,9 @@ module.exports = {
             })
         })
     },
+
+
+
     addToCart: (proId, userID) => {
         let proObj = {
             item: objectId(proId),
@@ -194,6 +209,9 @@ module.exports = {
         })
 
     },
+
+
+
     getCartProducts: (userID) => {
         return new Promise(async (resolve, reject) => {
             let cartItems = await db.get().collection('cart').aggregate([
@@ -227,6 +245,9 @@ module.exports = {
             resolve(cartItems)
         })
     },
+
+
+
     getCartCount: (userID) => {
         return new Promise(async (resolve, reject) => {
             let count = 0
@@ -237,6 +258,9 @@ module.exports = {
             resolve(count)
         })
     },
+
+
+
     getWishlistCount: (userID) => {
         return new Promise(async (resolve, reject) => {
             let count = 0
@@ -297,6 +321,9 @@ module.exports = {
             }
         })
     },
+
+
+
     deleteCartItem: (cartId, proId) => {
         return new Promise((resolve, reject) => {
             db.get().collection('cart').updateOne({ _id: objectId(cartId), 'products.item': objectId(proId) }, {
@@ -308,6 +335,9 @@ module.exports = {
         })
 
     },
+
+
+
     getTotalAmount: (userId) => {
 
         return new Promise(async (resolve, reject) => {
@@ -353,6 +383,9 @@ module.exports = {
             }
         })
     },
+
+
+
     placeOrder: (order, products, total) => {
         return new Promise((resolve, reject) => {
             if (order.coupon) {
@@ -413,6 +446,9 @@ module.exports = {
         })
 
     },
+
+
+
     getCartProductList: (userId) => {
         return new Promise(async (resolve, reject) => {
             let cart = await db.get().collection('cart').findOne({ user: objectId(userId) })
@@ -422,6 +458,9 @@ module.exports = {
             resolve(0)
         })
     },
+
+
+
     getUserOrders: (userId) => {
         return new Promise(async (resolve, reject) => {
             let orders = await db.get().collection('order').find({ userId: objectId(userId) }).sort({ date: -1 }).toArray();
@@ -432,6 +471,9 @@ module.exports = {
             resolve(orders)
         })
     },
+
+
+
     getOrderProducts: (orderId) => {
         return new Promise(async (resolve, reject) => {
             let orderItems = await db.get().collection('order').aggregate([
@@ -465,6 +507,9 @@ module.exports = {
             resolve(orderItems)
         })
     },
+
+
+
     cancelOrder: (id) => {
         return new Promise(async (resolve, reject) => {
             await db.get().collection('order').updateOne({ _id: objectId(id) }, { $set: { status: "cancelled", isCancelled: true } })
@@ -493,6 +538,7 @@ module.exports = {
     },
 
 
+
     addAddress: (data, userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection('user').updateOne({ _id: objectId(userId) }, {
@@ -501,6 +547,9 @@ module.exports = {
             resolve()
         })
     },
+
+
+
     deleteAddress: (addressId, userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection('user').updateOne({ _id: objectId(userId), 'address.id': addressId }, {
@@ -509,6 +558,9 @@ module.exports = {
             resolve(true)
         })
     },
+
+
+
     getAddress: (userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection('user').findOne({ _id: objectId(userId) }, {
@@ -520,6 +572,9 @@ module.exports = {
             })
         })
     },
+
+
+
     getUserDetails: (userId) => {
         return new Promise(async (resolve, reject) => {
             await db.get().collection('user').findOne({ _id: objectId(userId) }).then((response) => {
@@ -527,6 +582,9 @@ module.exports = {
             })
         })
     },
+
+
+
     generateRazorpay: (orderId, totalPrice) => {
         return new Promise((resolve, reject) => {
             var options = {
@@ -544,6 +602,9 @@ module.exports = {
             });
         })
     },
+
+
+
     generatePayal: (orderId, totalPrice) => {
         console.log('helperil-----------------------');
         return new Promise((resolve, reject) => {
@@ -587,11 +648,10 @@ module.exports = {
             });
 
         })
-
-
-
-
     },
+
+
+
     verifyPayment: (paymentDetails) => {
         return new Promise((resolve, reject) => {
             //Loading the crypto module in node.js
@@ -606,6 +666,9 @@ module.exports = {
             }
         })
     },
+
+
+
     changePaymentStatus: (orderId) => {
         console.log(orderId);
         return new Promise((resolve, reject) => {
@@ -618,6 +681,9 @@ module.exports = {
             resolve()
         })
     },
+
+
+
     passwordChanger: (userMail, oldPassword, newPassword) => {
         return new Promise(async (resolve, reject) => {
             newPassword = await bcrypt.hash(newPassword, 10)
@@ -636,6 +702,9 @@ module.exports = {
             }
         })
     },
+
+
+
     editProfile: (userData, currentUser) => {
 
         return new Promise(async (resolve, reject) => {
@@ -658,6 +727,9 @@ module.exports = {
         })
 
     },
+
+
+
     changeSubtotals: (details) => {
         details.count = parseInt(details.count)
         details.quantity = parseInt(details.quantity)
@@ -665,6 +737,9 @@ module.exports = {
 
         })
     },
+
+
+
     getCartSubTotal: (userId, proId) => {
         return new Promise(async (resolve, reject) => {
             let cartSubTotal = await db.get().collection('cart').aggregate([
@@ -728,6 +803,9 @@ module.exports = {
             }
         })
     },
+
+
+
     changeForgotPassword: (password, userId) => {
         return new Promise(async (resolve, reject) => {
             password = await bcrypt.hash(password, 10)
@@ -739,6 +817,9 @@ module.exports = {
                 })
         })
     },
+
+
+
     findWallet: (orderId) => {
         return new Promise((resolve, reject) => {
             db.get().collection('user').findOne({ _id: objectId(orderId) }).then((response) => {
@@ -746,6 +827,9 @@ module.exports = {
             })
         })
     },
+
+
+
     getOrder: (orderId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: objectId(orderId) }).then((response) => {
@@ -753,6 +837,9 @@ module.exports = {
             })
         })
     },
+
+
+
     findWalletAmount: (userId) => {
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collection.USER_COLLECTION).findOne({ _id: objectId(userId) }).then((response) => {
@@ -760,6 +847,9 @@ module.exports = {
             })
         })
     },
+
+
+
     findRefundAmount: (orderId) => {
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collection.ORDER_COLLECTION).findOne({ _id: objectId(orderId) }, { totalAmount: 1 }).then((response) => {
@@ -767,6 +857,9 @@ module.exports = {
             })
         })
     },
+
+
+
     toWallet: (userId, orderId, amount) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, { $set: { wallet: parseInt(amount) } }).then(() => {
@@ -776,6 +869,9 @@ module.exports = {
             })
         })
     },
+
+
+
     setWallet: (amount, orderId, userid) => {
         return new Promise((resolve, reject) => {
             db.get()
@@ -805,12 +901,18 @@ module.exports = {
                 });
         })
     },
+
+
+
     returnOrder: (orderId) => {
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, { $set: { status: "returned", isReturned: true } })
             resolve()
         })
     },
+
+
+
     reduceWallet: (user, amount, walletamount) => {
 
         let userId = user._id
@@ -820,6 +922,9 @@ module.exports = {
             resolve()
         })
     },
+
+
+
     // invoice
     getUserInvoice: (orderId) => {
         return new Promise(async (resolve, reject) => {
@@ -836,6 +941,9 @@ module.exports = {
             resolve(orders)
         })
     },
+
+
+
     // status track
     statusTrack: (orderId) => {
         return new Promise(async (resolve, reject) => {
@@ -888,6 +996,9 @@ module.exports = {
             reject()
         }
     },
+
+
+
     findProCount: (userId, proId) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -924,11 +1035,14 @@ module.exports = {
             }
         })
     },
-    findStock:(proId)=>{
-        return new Promise(async(resolve, reject) => {
-           let count = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:objectId(proId)})
 
-           resolve(count.stock)
+
+
+    findStock: (proId) => {
+        return new Promise(async (resolve, reject) => {
+            let count = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({ _id: objectId(proId) })
+
+            resolve(count.stock)
         })
     }
 

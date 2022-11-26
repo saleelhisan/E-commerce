@@ -15,6 +15,9 @@ module.exports = {
             resolve(allProdOffers);
         });
     },
+
+
+
     addProductOffer: (data) => {
         return new Promise(async (resolve, reject) => {
             data.startDateIso = new Date(data.starting);
@@ -36,6 +39,9 @@ module.exports = {
             }
         });
     },
+
+
+
     getProdOfferDetails: (proOfferId) => {
         return new Promise(async (resolve, reject) => {
             let proOfferDetails = await db
@@ -45,6 +51,9 @@ module.exports = {
             resolve(proOfferDetails);
         });
     },
+
+
+
     editProdOffer: (proOfferId, data) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.PRODUCT_OFFERS).updateOne({ _id: objectId(proOfferId) }, {
@@ -61,6 +70,9 @@ module.exports = {
             })
         });
     },
+
+
+
     deleteProdOffer: (proOfferId) => {
         return new Promise(async (resolve, reject) => {
             let productOffer = await db.get().collection(collection.PRODUCT_OFFERS).findOne({ _id: objectId(proOfferId) })
@@ -85,6 +97,9 @@ module.exports = {
         })
 
     },
+
+
+
     startProductOffer: (date) => {
         let proStartDateIso = new Date(date);
 
@@ -135,6 +150,9 @@ module.exports = {
             resolve()
         });
     },
+
+
+
     //category offers
     getAllCategories: () => {
         return new Promise(async (resolve, reject) => {
@@ -142,6 +160,9 @@ module.exports = {
             resolve(allCategories)
         })
     },
+
+
+
     getAllCatOffers: () => {
         return new Promise(async (resolve, reject) => {
             let allCatOffers = await db.get().collection(collection.CATEGORY_OFFERS).find().toArray()
@@ -149,38 +170,38 @@ module.exports = {
         })
     },
 
+
     //category offer section
     addCatOffer: (data) => {
-       
+
         data.catOfferPercentage = parseInt(data.catOfferPercentage)
         return new Promise(async (resolve, reject) => {
-         let exists = await db.get().collection(collection.CATEGORY_OFFERS).findOne({category:data.category})
-         if(exists){
-            reject()
-           }else{
-            data.startDateIso = new Date(data.starting)
-            data.endDateIso = new Date(data.expiry)
-            // let response = {};
-            let exist = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({ name: data.product, offer: { $exists: true } });
-            if (exist) {
+            let exists = await db.get().collection(collection.CATEGORY_OFFERS).findOne({ category: data.category })
+            if (exists) {
                 reject()
             } else {
-                db.get().collection(collection.CATEGORY_OFFERS).insertOne(data).then(async (response) => {
-                    resolve(response)
-                }).catch((err) => {
-                    reject(err)
-                })
+                data.startDateIso = new Date(data.starting)
+                data.endDateIso = new Date(data.expiry)
+                // let response = {};
+                let exist = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({ name: data.product, offer: { $exists: true } });
+                if (exist) {
+                    reject()
+                } else {
+                    db.get().collection(collection.CATEGORY_OFFERS).insertOne(data).then(async (response) => {
+                        resolve(response)
+                    }).catch((err) => {
+                        reject(err)
+                    })
+                }
+
             }
 
-           }
-            
 
         })
-
-       
-
-        
     },
+
+
+
     startCategoryOffer: (date) => {
         let startDateIso = new Date(date);
         return new Promise(async (resolve, reject) => {
@@ -211,12 +232,18 @@ module.exports = {
             }
         })
     },
+
+
+
     getCatOfferDetails: (catOfferId) => {
         return new Promise(async (resolve, reject) => {
             let catOfferDetails = await db.get().collection(collection.CATEGORY_OFFERS).findOne({ _id: objectId(catOfferId) })
             resolve(catOfferDetails)
         })
     },
+
+
+
     editCatOffer: (catOfferId, data) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.CATEGORY_OFFERS).updateOne({ _id: objectId(catOfferId) }, {
@@ -236,6 +263,9 @@ module.exports = {
 
         })
     },
+
+
+
     deleteCatOffer: (catOfferId) => {
         return new Promise(async (resolve, reject) => {
             let catOffer = await db.get().collection(collection.CATEGORY_OFFERS).findOne({ _id: objectId(catOfferId) })

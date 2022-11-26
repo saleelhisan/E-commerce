@@ -7,11 +7,14 @@ var ObjectId = require('mongodb').ObjectId
 
 
 module.exports = {
+
+
+
     addToWishlist: (userId, proId) => {
         let proObj = {
             item: ObjectId(proId),
         }
-        return new Promise(async(resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             console.log(userId, proId);
             let userWishlist = await db.get().collection('wishlist').findOne({ user: ObjectId(userId) })
             console.log(userWishlist);
@@ -26,7 +29,7 @@ module.exports = {
                     })
                 } else {
                     db.get().collection('wishlist').updateOne({ user: ObjectId(userId) }, {
-                        $push: { products:{ item: ObjectId(proId) }}
+                        $push: { products: { item: ObjectId(proId) } }
                     }).then(() => {
                         console.log('wished item pushed');
                         resolve()
@@ -45,31 +48,34 @@ module.exports = {
             }
         })
     },
-    getWishlists:(userId)=>{
-        return new Promise(async(resolve,reject)=>{
+
+
+
+    getWishlists: (userId) => {
+        return new Promise(async (resolve, reject) => {
             let wishlistItems = await db.get().collection('wishlist').aggregate([
                 {
-                    $match:{user:ObjectId (userId)}
+                    $match: { user: ObjectId(userId) }
                 },
                 {
-                    $unwind:'$products'
+                    $unwind: '$products'
                 },
                 {
-                    $project:{
-                        item:'$products.item',
+                    $project: {
+                        item: '$products.item',
                     }
                 },
                 {
-                    $lookup:{
-                        from:'product',
-                        localField:'item',
-                        foreignField:'_id',
-                        as:'product'
+                    $lookup: {
+                        from: 'product',
+                        localField: 'item',
+                        foreignField: '_id',
+                        as: 'product'
                     }
                 },
                 {
-                    $project:{
-                        item:1,product:{$arrayElemAt:['$product',0]}
+                    $project: {
+                        item: 1, product: { $arrayElemAt: ['$product', 0] }
                     }
                 }
             ]).toArray()
@@ -77,13 +83,16 @@ module.exports = {
             resolve(wishlistItems)
         })
     },
-    removeWishlist:(proId,userId)=>{
-        return new Promise((resolve,reject)=>{
-            db.get().collection('wishlist').updateOne({user:ObjectId(userId),'products.item':ObjectId(proId)},{
-                $pull:{products:{item:ObjectId(proId)}}
-            }).then((response)=>{
+
+
+    
+    removeWishlist: (proId, userId) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection('wishlist').updateOne({ user: ObjectId(userId), 'products.item': ObjectId(proId) }, {
+                $pull: { products: { item: ObjectId(proId) } }
+            }).then((response) => {
                 resolve()
             })
-        })    
+        })
     }
 }

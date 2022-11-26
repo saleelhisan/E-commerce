@@ -8,35 +8,68 @@ var objectId = require('mongodb').ObjectId
 const moment = require('moment')
 
 
-module.exports = {                                                                 //inserting data to the database  
+module.exports = {
+
+    //get all user in admin side
+
     getAllUser: () => {
         return new Promise(async (resolve, reject) => {
-            let users = await db.get().collection(collection.USER_COLLECTION).find().toArray()   //function for getting user details
-            resolve(users)
+            try {
+                let users = await db.get().collection(collection.USER_COLLECTION).find().toArray()
+                resolve(users)
+
+            } catch {
+                resolve(0)
+            }
+
         })
     },
+
+
+
+    //add user in admin side
+
     addUser: (user) => {
         let response = {}
         return new Promise(async (resolve, reject) => {
-            let userData = await db.get().collection(collection.USER_COLLECTION).findOne({ email: user.email })
-            if (userData) {
-                resolve(response.status = false)
-            } else {
-                user.password = await bcrypt.hash(user.password, 10)
-                db.get().collection(collection.USER_COLLECTION).insertOne(user).then((req, res) => {
-                    resolve(response.status = true)
-                })
+
+
+            try {
+                let userData = await db.get().collection(collection.USER_COLLECTION).findOne({ email: user.email })
+                if (userData) {
+                    resolve(response.status = false)
+                } else {
+                    user.password = await bcrypt.hash(user.password, 10)
+                    db.get().collection(collection.USER_COLLECTION).insertOne(user).then((req, res) => {
+                        resolve(response.status = true)
+                    })
+                }
+            } catch {
+                resolve(0)
             }
+
+
         })
     },
+
+
+
+    //delete a user in admin side
+
     deleteUser: (emailId) => {
         return new Promise((resolve, reject) => {
+
             db.get().collection(collection.USER_COLLECTION).deleteOne({ email: emailId }).then((response) => {              //admin deleting user 
                 console.log('User deleted');
                 resolve(response)
             })
         })
     },
+
+
+
+    //get user details 
+
     getUserDetails: (emailId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).findOne({ email: emailId }).then((user) => {
@@ -44,6 +77,10 @@ module.exports = {                                                              
             })
         })
     },
+
+
+    //edit user in admin side
+
     editUser: (emailId, userDetails) => {
         return new Promise(async (resolve, reject) => {
             password = await bcrypt.hash(userDetails.password, 10)
@@ -58,6 +95,10 @@ module.exports = {                                                              
             })
         })
     },
+
+
+    //add admin
+
     addAdmin: (data) => {
         let response = {}
         return new Promise(async (resolve, reject) => {
@@ -73,6 +114,10 @@ module.exports = {                                                              
             }
         })
     },
+
+
+    //admin login 
+
     adminLogin: (data) => {
         return new Promise(async (resolve, reject) => {
             let loginstatus = false
@@ -96,6 +141,9 @@ module.exports = {                                                              
             }
         })
     },
+
+    //add category
+
     addCategory: (data) => {
         return new Promise(async (resolve, reject) => {
             let category = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ name: data.name })
@@ -108,6 +156,11 @@ module.exports = {                                                              
             }
         })
     },
+
+
+    //get all category   
+
+
     getAllCategory: () => {
         return new Promise(async (resolve, reject) => {
             await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray().then((response) => {
@@ -115,21 +168,26 @@ module.exports = {                                                              
             })
         })
     },
-    deleteCategory: (categoryId,categoryname) => {
+
+    //delete category
+
+    deleteCategory: (categoryId, categoryname) => {
         console.log(categoryname);
-        return new Promise(async(resolve, reject) => {
-             let catexists = await db.get().collection('product').findOne({category:categoryname})
-            if(catexists != null){
+        return new Promise(async (resolve, reject) => {
+            let catexists = await db.get().collection('product').findOne({ category: categoryname })
+            if (catexists != null) {
                 reject()
-            }else{
+            } else {
                 db.get().collection(collection.CATEGORY_COLLECTION).deleteOne({ _id: objectId(categoryId) }).then((response) => {
                     resolve(response)
                 })
             }
-            
+
         })
 
     },
+
+
     getCategoryDetails: (categoryId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.CATEGORY_COLLECTION).findOne({ _id: objectId(categoryId) }).then((category) => {
@@ -137,6 +195,9 @@ module.exports = {                                                              
             })
         })
     },
+
+
+
     updateCategory: (categoryId, categoryDetails) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.CATEGORY_COLLECTION).updateOne({ _id: objectId(categoryId) }, {
@@ -148,6 +209,8 @@ module.exports = {                                                              
             })
         })
     },
+
+
     blockUser: (userID) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userID) }, { $set: { isBlocked: true } }).then((response) => {
@@ -155,6 +218,9 @@ module.exports = {                                                              
             })
         })
     },
+
+
+
     unblockUser: (userID) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userID) }, { $set: { isBlocked: false } }).then((response) => {
@@ -162,576 +228,614 @@ module.exports = {                                                              
             })
         })
     },
+
+
+
     getAllUserNames: () => {
         return new Promise(async (resolve, reject) => {
-            let orders =  await db.get().collection(collection.ORDER_COLLECTION).find().sort({ date: -1 }).toArray()
-                var i;
-                for (i = 0; i < orders.length; i++) {
-                    orders[i].date = moment(orders[i].date).format('lll');
-                }
-                resolve(orders)
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find().sort({ date: -1 }).toArray()
+            var i;
+            for (i = 0; i < orders.length; i++) {
+                orders[i].date = moment(orders[i].date).format('lll');
+            }
+            resolve(orders)
         })
     },
+
+
+
     // order status change
-    changeOrderStatus: (orderId,status) => {
-    return new Promise((resolve, reject) => {
-      if (status == "cancelled") {
-        db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
-          $set: {
-            status: status,
-            isCancelled: true,
-            cancellDate: new Date()
-          }
-        }).then(() => {
-          resolve()
-        })
-      } else if (status == "delivered") {
-  
-        db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
-          $set: {
-            status: status,
-            isDelivered: true,
-            deliverdDate: new Date()
-  
-          }
-  
-        }).then(() => {
-          resolve()
-        })
-      } else if (status == "shipped") {
-        db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
-          $set: {
-            status: status,
-            isShipped: true,
-            shippedDate: new Date()
-  
-          }
-  
-        }).then(() => {
-          resolve()
-        })
-      } else if (status == "Out For Delivery") {
-  
-        db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
-          $set: {
-            status: status,
-            isOutForDelivery: true,
-            OutForDeliveryDate: new Date()
-          }
-  
-        }).then(() => {
-          resolve()
-        })
-      } else {
-        db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
-          $set: {
-            status: status,
-            isCancelled: false
-          }
-        }).then((response) => {
-          console.log(response);
-          resolve()
-        })
-  
-      }
-  
-    })
-  },
-    getOrderProductsAdmin: (orderId) => {
-        return new Promise(async (resolve, reject) => {
-            let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                {
-                    $match: { _id: objectId(orderId) }
-                },
-                {
-                    $unwind: '$products'
-                },
-                {
-                    $project: {
-                        item: '$products.item',
-                        quantity: '$products.quantity'
-                    }
-                },
-                {
-                    $lookup: {
-                        from: 'product',
-                        localField: 'item',
-                        foreignField: '_id',
-                        as: 'product'
-                    }
-                },
-                {
-                    $project: {
-                        item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
-                    }
+    changeOrderStatus: (orderId, status) => {
+        return new Promise((resolve, reject) => {
+
+
+            try {
+                if (status == "cancelled") {
+                    db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
+                        $set: {
+                            status: status,
+                            isCancelled: true,
+                            cancellDate: new Date()
+                        }
+                    }).then(() => {
+                        resolve()
+                    })
+                } else if (status == "delivered") {
+
+                    db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
+                        $set: {
+                            status: status,
+                            isDelivered: true,
+                            deliverdDate: new Date()
+
+                        }
+
+                    }).then(() => {
+                        resolve()
+                    })
+                } else if (status == "shipped") {
+                    db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
+                        $set: {
+                            status: status,
+                            isShipped: true,
+                            shippedDate: new Date()
+
+                        }
+
+                    }).then(() => {
+                        resolve()
+                    })
+                } else if (status == "Out For Delivery") {
+
+                    db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
+                        $set: {
+                            status: status,
+                            isOutForDelivery: true,
+                            OutForDeliveryDate: new Date()
+                        }
+
+                    }).then(() => {
+                        resolve()
+                    })
+                } else {
+                    db.get().collection(collection.ORDER_COLLECTION).updateOne({ _id: objectId(orderId) }, {
+                        $set: {
+                            status: status,
+                            isCancelled: false
+                        }
+                    }).then((response) => {
+                        console.log(response);
+                        resolve()
+                    })
+
                 }
 
-            ]).toArray()
-            resolve(orderItems)
+            } catch {
+                resolve(0)
+            }
         })
     },
+
+
+
+    getOrderProductsAdmin: (orderId) => {
+        return new Promise(async (resolve, reject) => {
+
+            try {
+                let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: { _id: objectId(orderId) }
+                    },
+                    {
+                        $unwind: '$products'
+                    },
+                    {
+                        $project: {
+                            item: '$products.item',
+                            quantity: '$products.quantity'
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'product',
+                            localField: 'item',
+                            foreignField: '_id',
+                            as: 'product'
+                        }
+                    },
+                    {
+                        $project: {
+                            item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
+                        }
+                    }
+
+                ]).toArray()
+                resolve(orderItems)
+
+            } catch {
+                resolve(0)
+            }
+        })
+    },
+
+
+
     // monthly report
     monthlyReport: () => {
         return new Promise(async (resolve, reject) => {
-            try{
-            let start=new Date(new Date()-1000*60*60*24*30)
-            let end = new Date()
+            try {
+                let start = new Date(new Date() - 1000 * 60 * 60 * 24 * 30)
+                let end = new Date()
 
-            let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
-            var i;
-            for(i=0;i<orderSuccess.length;i++){
-                orderSuccess[i].date=moment(orderSuccess[i].date).format('lll')
-            }
-            // console.log(orderSuccess,"hfgbkhdfbj");
-            let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
-            let orderSuccessLength = orderSuccess.length
-            let orderTotalLength = orderTotal.length
-            let orderFailLength = orderTotalLength - orderSuccessLength
-            let total = 0
-            let discount=0
-            let razorpay = 0
-            let cod = 0
-            let paypal = 0
-            let wallet=0
-            
-            for (let i = 0; i < orderSuccessLength; i++) {
-                total = total + orderSuccess[i].totalAmount
-                if (orderSuccess[i].paymentMethod === 'COD') {
-                    cod++
-                } else if (orderSuccess[i].paymentMethod === 'paypal') {
-                    paypal++
-                }else if (orderSuccess[i].paymentMethod === 'razorpay') {
-                    razorpay++
+                let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
+                var i;
+                for (i = 0; i < orderSuccess.length; i++) {
+                    orderSuccess[i].date = moment(orderSuccess[i].date).format('lll')
                 }
-                 else {
-                    wallet++
-                }
-                 if (orderSuccess[i].discount) {
-                    console.log("discount check");
-                    discount = discount + parseInt(orderSuccess[i].discount)
-                    discount++
-                }
-            }
+                // console.log(orderSuccess,"hfgbkhdfbj");
+                let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
+                let orderSuccessLength = orderSuccess.length
+                let orderTotalLength = orderTotal.length
+                let orderFailLength = orderTotalLength - orderSuccessLength
+                let total = 0
+                let discount = 0
+                let razorpay = 0
+                let cod = 0
+                let paypal = 0
+                let wallet = 0
 
-            let productCount=await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                {
-                    $match:{
-                       $and:[{status:{$nin:["cancelled"]}
-                    },
-                { date: { $gte: start, $lte: end }}]
-
-                    },
-                    
-                },
-                {
-                    $project:{
-                        _id:0,
-                        quantity:'$products.quantity'
-                        
+                for (let i = 0; i < orderSuccessLength; i++) {
+                    total = total + orderSuccess[i].totalAmount
+                    if (orderSuccess[i].paymentMethod === 'COD') {
+                        cod++
+                    } else if (orderSuccess[i].paymentMethod === 'paypal') {
+                        paypal++
+                    } else if (orderSuccess[i].paymentMethod === 'razorpay') {
+                        razorpay++
                     }
-                },
-                {
-                    $unwind:'$quantity'
-                },
-                {
-                    $group: {
-                        _id: null,
-                        total: { $sum:'$quantity' }
+                    else {
+                        wallet++
+                    }
+                    if (orderSuccess[i].discount) {
+                        console.log("discount check");
+                        discount = discount + parseInt(orderSuccess[i].discount)
+                        discount++
                     }
                 }
-              ]).toArray()
 
-            var data = {
-                start: moment(start).format('YYYY/MM/DD'),
-                end: moment(end).format('YYYY/MM/DD'),
-                totalOrders: orderTotalLength,
-                successOrders: orderSuccessLength,
-                failOrders: orderFailLength,
-                totalSales: total,
-                cod: cod,
-                paypal: paypal,
-                razorpay: razorpay,
-                wallet:wallet,
-                discount:discount,
-                productCount:productCount[0].total,
-               
-                currentOrders: orderSuccess
+                let productCount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: {
+                            $and: [{
+                                status: { $nin: ["cancelled"] }
+                            },
+                            { date: { $gte: start, $lte: end } }]
+
+                        },
+
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            quantity: '$products.quantity'
+
+                        }
+                    },
+                    {
+                        $unwind: '$quantity'
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            total: { $sum: '$quantity' }
+                        }
+                    }
+                ]).toArray()
+
+                var data = {
+                    start: moment(start).format('YYYY/MM/DD'),
+                    end: moment(end).format('YYYY/MM/DD'),
+                    totalOrders: orderTotalLength,
+                    successOrders: orderSuccessLength,
+                    failOrders: orderFailLength,
+                    totalSales: total,
+                    cod: cod,
+                    paypal: paypal,
+                    razorpay: razorpay,
+                    wallet: wallet,
+                    discount: discount,
+                    productCount: productCount[0].total,
+
+                    currentOrders: orderSuccess
+                }
+                // console.log(data,"heydata");
+                resolve(data)
             }
-            // console.log(data,"heydata");
-            resolve(data)
-        }
-        catch {
-            resolve(0)
-        }
-      })
-     },
+            catch {
+                resolve(0)
+            }
+        })
+    },
+
+
 
     // get report
-     getReport: (startDate,endDate) => {
+    getReport: (startDate, endDate) => {
         return new Promise(async (resolve, reject) => {
-            try{
-            let start=new Date(startDate)
-            let end = new Date(endDate)
-            
-            let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
-            //console.log(orderSuccess,"hfgbkhdfbj");
-            let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
-            let orderSuccessLength = orderSuccess.length
-            let orderTotalLength = orderTotal.length
-            let orderFailLength = orderTotalLength - orderSuccessLength
-            let total = 0
-            let discount=0
+            try {
+                let start = new Date(startDate)
+                let end = new Date(endDate)
 
-            let razorpay = 0
-            let cod = 0
-            let paypal = 0
-            let wallet=0
-            let productCount=0
-            for (let i = 0; i < orderSuccessLength; i++) {
-                total = total + orderSuccess[i].totalAmount
-                if (orderSuccess[i].paymentMethod === 'COD') {
-                    cod++
-                } else if (orderSuccess[i].paymentMethod === 'paypal') {
-                    paypal++
-                }else if (orderSuccess[i].paymentMethod === 'razorpay') {
-                    razorpay++
-                }
-                 else {
-                    wallet++
-                }
-                 if (orderSuccess[i].discount) {
-                
-                    discount = discount + parseInt(orderSuccess[i].discount)
-                    discount++
-                }
-            }
+                let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
+                //console.log(orderSuccess,"hfgbkhdfbj");
+                let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
+                let orderSuccessLength = orderSuccess.length
+                let orderTotalLength = orderTotal.length
+                let orderFailLength = orderTotalLength - orderSuccessLength
+                let total = 0
+                let discount = 0
 
-             productCount=await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-                {
-                    $match:{
-                       $and:[{status:{$nin:["cancelled"]}
-                    },
-                { date: { $gte: start, $lte: end }}]
-
-                    },
-                    
-                },
-                {
-                    $project:{
-                        _id:0,
-                        quantity:'$products.quantity'
-                        
+                let razorpay = 0
+                let cod = 0
+                let paypal = 0
+                let wallet = 0
+                let productCount = 0
+                for (let i = 0; i < orderSuccessLength; i++) {
+                    total = total + orderSuccess[i].totalAmount
+                    if (orderSuccess[i].paymentMethod === 'COD') {
+                        cod++
+                    } else if (orderSuccess[i].paymentMethod === 'paypal') {
+                        paypal++
+                    } else if (orderSuccess[i].paymentMethod === 'razorpay') {
+                        razorpay++
                     }
-                },
-                {
-                    $unwind:'$quantity'
-                },
-                {
-                    $group: {
-                        _id: null,
-                        total: { $sum:'$quantity' }
+                    else {
+                        wallet++
+                    }
+                    if (orderSuccess[i].discount) {
+
+                        discount = discount + parseInt(orderSuccess[i].discount)
+                        discount++
                     }
                 }
-              ]).toArray()
 
-            var data = {
-                start: moment(start).format('YYYY/MM/DD'),
-                end: moment(end).format('YYYY/MM/DD'),
-                totalOrders: orderTotalLength,
-                successOrders: orderSuccessLength,
-                failOrders: orderFailLength,
-                totalSales: total,
-                cod: cod,
-                paypal: paypal,
-                razorpay: razorpay,
-                wallet:wallet,
-                discount:discount,
-                productCount:productCount[0].total,
-                currentOrders: orderSuccess
-            }
-            // console.log(data,"heydata");
-            resolve(data)
-        }catch {
-            resolve(0)
-        }
-      })
-     },
+                productCount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: {
+                            $and: [{
+                                status: { $nin: ["cancelled"] }
+                            },
+                            { date: { $gte: start, $lte: end } }]
 
-dailyReport:()=>{
-    return new Promise(async(resolve, reject) => {
-        try{
+                        },
 
-        let start=new Date(new Date()-1000*60*60*24)
-        let end = new Date()
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            quantity: '$products.quantity'
 
-        let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
-        
-        let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
-        let orderSuccessLength = orderSuccess.length
-        let orderTotalLength = orderTotal.length
-        let orderFailLength = orderTotalLength - orderSuccessLength
-        let total = 0
-        let discount=0
-        let razorpay = 0
-        let cod = 0
-        let paypal = 0
-        let wallet=0
-        let productCount=0
-        for (let i = 0; i < orderSuccessLength; i++) {
-            total = total + orderSuccess[i].totalAmount
-            if (orderSuccess[i].paymentMethod === 'COD') {
-                cod++
-            } else if (orderSuccess[i].paymentMethod === 'paypal') {
-                paypal++
-            }else if (orderSuccess[i].paymentMethod === 'razorpay') {
-                razorpay++
-            }
-             else {
-                wallet++
-            }
-             if (orderSuccess[i].discount) {
-            
-                discount = discount + parseInt(orderSuccess[i].discount)
-                discount++
-            }
-        }
-        productCount=await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-            {
-                $match:{
-                   $and:[{status:{$nin:["cancelled"]}
-                },
-            { date: { $gte: start, $lte: end }}]
+                        }
+                    },
+                    {
+                        $unwind: '$quantity'
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            total: { $sum: '$quantity' }
+                        }
+                    }
+                ]).toArray()
 
-                },
-                
-            },
-            {
-                $project:{
-                    _id:0,
-                    quantity:'$products.quantity'
-                    
+                var data = {
+                    start: moment(start).format('YYYY/MM/DD'),
+                    end: moment(end).format('YYYY/MM/DD'),
+                    totalOrders: orderTotalLength,
+                    successOrders: orderSuccessLength,
+                    failOrders: orderFailLength,
+                    totalSales: total,
+                    cod: cod,
+                    paypal: paypal,
+                    razorpay: razorpay,
+                    wallet: wallet,
+                    discount: discount,
+                    productCount: productCount[0].total,
+                    currentOrders: orderSuccess
                 }
-            },
-            {
-                $unwind:'$quantity'
-            },
-            {
-                $group: {
-                    _id: null,
-                    total: { $sum:'$quantity' }
-                }
+                // console.log(data,"heydata");
+                resolve(data)
+            } catch {
+                resolve(0)
             }
-          ]).toArray()
-        var data = {
-            start: moment(start).format('YYYY/MM/DD'),
-            end: moment(end).format('YYYY/MM/DD'),
-            totalOrders: orderTotalLength,
-            successOrders: orderSuccessLength,
-            failOrders: orderFailLength,
-            totalSales: total,
-            cod: cod,
-            paypal: paypal,
-            razorpay: razorpay,
-            wallet:wallet,
-            discount:discount,
-            productCount:productCount[0].total,
-            averageRevenue:total/productCount[0].total, 
-            currentOrders: orderSuccess
-        }
-        resolve(data)
-    }catch {
-        resolve(0)
+        })
+    },
+
+
+    //daily report
+
+    dailyReport: () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+
+                let start = new Date(new Date() - 1000 * 60 * 60 * 24)
+                let end = new Date()
+
+                let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
+
+                let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
+                let orderSuccessLength = orderSuccess.length
+                let orderTotalLength = orderTotal.length
+                let orderFailLength = orderTotalLength - orderSuccessLength
+                let total = 0
+                let discount = 0
+                let razorpay = 0
+                let cod = 0
+                let paypal = 0
+                let wallet = 0
+                let productCount = 0
+                for (let i = 0; i < orderSuccessLength; i++) {
+                    total = total + orderSuccess[i].totalAmount
+                    if (orderSuccess[i].paymentMethod === 'COD') {
+                        cod++
+                    } else if (orderSuccess[i].paymentMethod === 'paypal') {
+                        paypal++
+                    } else if (orderSuccess[i].paymentMethod === 'razorpay') {
+                        razorpay++
+                    }
+                    else {
+                        wallet++
+                    }
+                    if (orderSuccess[i].discount) {
+
+                        discount = discount + parseInt(orderSuccess[i].discount)
+                        discount++
+                    }
+                }
+                productCount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: {
+                            $and: [{
+                                status: { $nin: ["cancelled"] }
+                            },
+                            { date: { $gte: start, $lte: end } }]
+
+                        },
+
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            quantity: '$products.quantity'
+
+                        }
+                    },
+                    {
+                        $unwind: '$quantity'
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            total: { $sum: '$quantity' }
+                        }
+                    }
+                ]).toArray()
+                var data = {
+                    start: moment(start).format('YYYY/MM/DD'),
+                    end: moment(end).format('YYYY/MM/DD'),
+                    totalOrders: orderTotalLength,
+                    successOrders: orderSuccessLength,
+                    failOrders: orderFailLength,
+                    totalSales: total,
+                    cod: cod,
+                    paypal: paypal,
+                    razorpay: razorpay,
+                    wallet: wallet,
+                    discount: discount,
+                    productCount: productCount[0].total,
+                    averageRevenue: total / productCount[0].total,
+                    currentOrders: orderSuccess
+                }
+                resolve(data)
+            } catch {
+                resolve(0)
+            }
+        })
+    },
+
+
+
+    // weekly report
+    weeklyReport: () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+
+                let start = new Date(new Date() - 1000 * 60 * 60 * 24 * 7)
+
+                let end = new Date()
+
+                let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
+                let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
+                let orderSuccessLength = orderSuccess.length
+                let orderTotalLength = orderTotal.length
+                let orderFailLength = orderTotalLength - orderSuccessLength
+                let total = 0
+                let discount = 0
+
+                let razorpay = 0
+                let cod = 0
+                let paypal = 0
+                let wallet = 0
+                let productCount = 0
+                for (let i = 0; i < orderSuccessLength; i++) {
+                    total = total + orderSuccess[i].totalAmount
+                    if (orderSuccess[i].paymentMethod === 'COD') {
+                        cod++
+                    } else if (orderSuccess[i].paymentMethod === 'paypal') {
+                        paypal++
+                    } else if (orderSuccess[i].paymentMethod === 'razorpay') {
+                        razorpay++
+                    }
+                    else {
+                        wallet++
+                    }
+                    if (orderSuccess[i].discount) {
+
+                        discount = discount + parseInt(orderSuccess[i].discount)
+                        discount++
+                    }
+                }
+
+                productCount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: {
+                            $and: [{
+                                status: { $nin: ["cancelled"] }
+                            },
+                            { date: { $gte: start, $lte: end } }]
+
+                        },
+
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            quantity: '$products.quantity'
+
+                        }
+                    },
+                    {
+                        $unwind: '$quantity'
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            total: { $sum: '$quantity' }
+                        }
+                    }
+                ]).toArray()
+
+                var data = {
+                    start: moment(start).format('YYYY/MM/DD'),
+                    end: moment(end).format('YYYY/MM/DD'),
+                    totalOrders: orderTotalLength,
+                    successOrders: orderSuccessLength,
+                    failOrders: orderFailLength,
+                    totalSales: total,
+                    cod: cod,
+                    paypal: paypal,
+                    razorpay: razorpay,
+                    wallet: wallet,
+                    discount: discount,
+                    productCount: productCount[0].total,
+                    averageRevenue: total / productCount[0].total,
+
+                    currentOrders: orderSuccess
+                }
+
+                resolve(data)
+            } catch {
+                resolve(0)
+            }
+        })
+    },
+
+
+
+    // yearly report
+    yearlyReport: () => {
+        return new Promise(async (resolve, reject) => {
+            try {
+
+                let start = new Date(new Date() - 1000 * 60 * 60 * 24 * 365)
+
+                let end = new Date()
+
+                let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
+                let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
+                let orderSuccessLength = orderSuccess.length
+                let orderTotalLength = orderTotal.length
+                let orderFailLength = orderTotalLength - orderSuccessLength
+                let total = 0
+                let discount = 0
+
+                let razorpay = 0
+                let cod = 0
+                let paypal = 0
+                let wallet = 0
+                let productCount = 0
+                for (let i = 0; i < orderSuccessLength; i++) {
+                    total = total + orderSuccess[i].totalAmount
+                    if (orderSuccess[i].paymentMethod === 'COD') {
+                        cod++
+                    } else if (orderSuccess[i].paymentMethod === 'paypal') {
+                        paypal++
+                    } else if (orderSuccess[i].paymentMethod === 'razorpay') {
+                        razorpay++
+                    }
+                    else {
+                        wallet++
+                    }
+                    if (orderSuccess[i].discount) {
+
+                        discount = discount + parseInt(orderSuccess[i].discount)
+                        discount++
+                    }
+                }
+
+                productCount = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                    {
+                        $match: {
+                            $and: [{
+                                status: { $nin: ["cancelled"] }
+                            },
+                            { date: { $gte: start, $lte: end } }]
+
+                        },
+
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            quantity: '$products.quantity'
+
+                        }
+                    },
+                    {
+                        $unwind: '$quantity'
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            total: { $sum: '$quantity' }
+                        }
+                    }
+                ]).toArray()
+
+                var data = {
+                    start: moment(start).format('YYYY/MM/DD'),
+                    end: moment(end).format('YYYY/MM/DD'),
+                    totalOrders: orderTotalLength,
+                    successOrders: orderSuccessLength,
+                    failOrders: orderFailLength,
+                    totalSales: total,
+                    cod: cod,
+                    paypal: paypal,
+                    razorpay: razorpay,
+                    wallet: wallet,
+                    discount: discount,
+                    productCount: productCount[0].total,
+
+                    averageRevenue: total / productCount[0].total,
+
+                    currentOrders: orderSuccess
+                }
+
+                resolve(data)
+            } catch {
+                resolve(0)
+            }
+        })
     }
-    })
- },
-
-// weekly report
- weeklyReport:()=>{
-    return new Promise(async(resolve, reject) => {
-        try{
-        
-        let start=new Date(new Date()-1000*60*60*24*7)
-
-        let end = new Date()
-        
-        let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
-        let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
-        let orderSuccessLength = orderSuccess.length
-        let orderTotalLength = orderTotal.length
-        let orderFailLength = orderTotalLength - orderSuccessLength
-        let total = 0
-        let discount=0
-
-        let razorpay = 0
-        let cod = 0
-        let paypal = 0
-        let wallet=0
-        let productCount=0
-        for (let i = 0; i < orderSuccessLength; i++) {
-            total = total + orderSuccess[i].totalAmount
-            if (orderSuccess[i].paymentMethod === 'COD') {
-                cod++
-            } else if (orderSuccess[i].paymentMethod === 'paypal') {
-                paypal++
-            }else if (orderSuccess[i].paymentMethod === 'razorpay') {
-                razorpay++
-            }
-             else {
-                wallet++
-            }
-             if (orderSuccess[i].discount) {
-            
-                discount = discount + parseInt(orderSuccess[i].discount)
-                discount++
-            }
-        }
-
-        productCount=await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-            {
-                $match:{
-                   $and:[{status:{$nin:["cancelled"]}
-                },
-            { date: { $gte: start, $lte: end }}]
-
-                },
-                
-            },
-            {
-                $project:{
-                    _id:0,
-                    quantity:'$products.quantity'
-                    
-                }
-            },
-            {
-                $unwind:'$quantity'
-            },
-            {
-                $group: {
-                    _id: null,
-                    total: { $sum:'$quantity' }
-                }
-            }
-          ]).toArray()
-
-        var data = {
-            start: moment(start).format('YYYY/MM/DD'),
-            end: moment(end).format('YYYY/MM/DD'),
-            totalOrders: orderTotalLength,
-            successOrders: orderSuccessLength,
-            failOrders: orderFailLength,
-            totalSales: total,
-            cod: cod,
-            paypal: paypal,
-            razorpay: razorpay,
-            wallet:wallet,
-            discount:discount,
-            productCount:productCount[0].total,
-            averageRevenue:total/productCount[0].total,
-            
-            currentOrders: orderSuccess
-        }
-
-        resolve(data)
-    }catch {
-        resolve(0)
-    }
-    })
- },
-
- // yearly report
- yearlyReport:()=>{
-    return new Promise(async(resolve, reject) => {
-        try{
-        
-        let start=new Date(new Date()-1000*60*60*24*365)
-
-        let end = new Date()
-        
-        let orderSuccess = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end }, status: { $nin: ['cancelled'] } }).sort({ Date: -1, Time: -1 }).toArray()
-        let orderTotal = await db.get().collection(collection.ORDER_COLLECTION).find({ date: { $gte: start, $lte: end } }).toArray()
-        let orderSuccessLength = orderSuccess.length
-        let orderTotalLength = orderTotal.length
-        let orderFailLength = orderTotalLength - orderSuccessLength
-        let total = 0
-        let discount=0
-
-        let razorpay = 0
-        let cod = 0
-        let paypal = 0
-        let wallet=0
-        let productCount=0
-        for (let i = 0; i < orderSuccessLength; i++) {
-            total = total + orderSuccess[i].totalAmount
-            if (orderSuccess[i].paymentMethod === 'COD') {
-                cod++
-            } else if (orderSuccess[i].paymentMethod === 'paypal') {
-                paypal++
-            }else if (orderSuccess[i].paymentMethod === 'razorpay') {
-                razorpay++
-            }
-             else {
-                wallet++
-            }
-             if (orderSuccess[i].discount) {
-            
-                discount = discount + parseInt(orderSuccess[i].discount)
-                discount++
-            }
-        }
-
-        productCount=await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-            {
-                $match:{
-                   $and:[{status:{$nin:["cancelled"]}
-                },
-            { date: { $gte: start, $lte: end }}]
-
-                },
-                
-            },
-            {
-                $project:{
-                    _id:0,
-                    quantity:'$products.quantity'
-                    
-                }
-            },
-            {
-                $unwind:'$quantity'
-            },
-            {
-                $group: {
-                    _id: null,
-                    total: { $sum:'$quantity' }
-                }
-            }
-          ]).toArray()
-
-        var data = {
-            start: moment(start).format('YYYY/MM/DD'),
-            end: moment(end).format('YYYY/MM/DD'),
-            totalOrders: orderTotalLength,
-            successOrders: orderSuccessLength,
-            failOrders: orderFailLength,
-            totalSales: total,
-            cod: cod,
-            paypal: paypal,
-            razorpay: razorpay,
-            wallet:wallet,
-            discount:discount,
-            productCount:productCount[0].total,
-
-            averageRevenue:total/productCount[0].total,
-
-            currentOrders: orderSuccess
-        }
-    
-        resolve(data)
-    }catch {
-        resolve(0)
-    }
-       })
-     }
 
 }

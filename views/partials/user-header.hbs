@@ -244,9 +244,9 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="mobile-menu-link" data-toggle="tab" href="#mobile-menu-tab" role="tab" aria-controls="mobile-menu-tab" aria-selected="true">Menu</a>
                 </li>
-                <li class="nav-item">
+                {{!-- <li class="nav-item">
                     <a class="nav-link" id="mobile-cats-link" data-toggle="tab" href="#mobile-cats-tab" role="tab" aria-controls="mobile-cats-tab" aria-selected="false">Categories</a>
-                </li>
+                </li> --}}
             </ul>
 
             <div class="tab-content">
@@ -263,21 +263,26 @@
                             <li>
                                 <a href="/orders" class="sf-with-ul">My orders</a>
                             </li>
-                            
+                            <li>
+                                <a href="/wishlists" class="sf-with-ul">My wishlist</a>
+                            </li>
+                            <li>
+                                <a href="/user-profile">My profile</a>
+                            </li>
                             
                             <li>
                                 <a href="">Categories</a>
                                 <ul>
-                                    <li><a href="#">Biography</a></li>
-                                    <li><a href="#">Fiction</a></li>
-                                    <li><a href="#">Novel</a></li>
-                                    <li><a href="#">Self Help</a></li>
+                                    <li><a href="/filter?filterby=biography">Biography</a></li>
+                                    <li><a href="/filter?filterby=fiction">Fiction</a></li>
+                                    <li><a href="/filter?filterby=novel">Novel</a></li>
+                                    <li><a href="/filter?filterby=self help">Self Help</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </nav><!-- End .mobile-nav -->
                 </div><!-- .End .tab-pane -->
-                {{!-- <div class="tab-pane fade" id="mobile-cats-tab" role="tabpanel" aria-labelledby="mobile-cats-link">
+                <div class="tab-pane fade" id="mobile-cats-tab" role="tabpanel" aria-labelledby="mobile-cats-link">
                     <nav class="mobile-cats-nav">
                         <ul class="mobile-cats-menu">
                             <li><a class="mobile-cats-lead" href="#">Daily offers</a></li>
@@ -293,7 +298,7 @@
                             <li><a href="#">Outdoor Furniture </a></li>
                         </ul><!-- End .mobile-cats-menu -->
                     </nav><!-- End .mobile-cats-nav -->
-                </div><!-- .End .tab-pane --> --}}
+                </div><!-- .End .tab-pane -->
             </div><!-- End .tab-content -->
 
             <div class="social-icons">

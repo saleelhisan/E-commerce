@@ -14,6 +14,9 @@ module.exports = {
             resolve(coupons);
         });
     },
+
+
+
     startCouponOffer: (date) => {
         let couponStartDate = new Date(date)
         return new Promise(async (resolve, reject) => {
@@ -37,6 +40,8 @@ module.exports = {
 
         })
     },
+
+
     addCoupon: (data) => {
         console.log(data);
         return new Promise(async (resolve, reject) => {
@@ -72,6 +77,9 @@ module.exports = {
             }
         });
     },
+
+
+
     getCouponDetails: (couponId) => {
         return new Promise(async (resolve, reject) => {
             let couponDetails = await db
@@ -81,6 +89,9 @@ module.exports = {
             resolve(couponDetails);
         });
     },
+
+
+
     editCoupon: (data, couponId) => {
         return new Promise((resolve, reject) => {
             db.get()
@@ -101,6 +112,9 @@ module.exports = {
                 });
         });
     },
+
+
+
     deleteCoupon: (couponId) => {
         return new Promise((resolve, reject) => {
             db.get()
@@ -111,6 +125,9 @@ module.exports = {
                 });
         });
     },
+
+
+
     validateCoupon: (couponCode, userId, totalAmount) => {
         return new Promise(async (resolve, reject) => {
             obj = {}
@@ -134,7 +151,7 @@ module.exports = {
                         obj.success = true
                         obj.discountValue = discountValue
                         resolve(obj)
-                    } else if(date > coupon.expiry) {
+                    } else if (date > coupon.expiry) {
                         console.log("coupon expired");
                         obj.couponExpired = true
                         resolve(obj)

@@ -167,7 +167,9 @@ router.get('/logout', (req, res) => {                           //destroying ses
 })
 
 router.get('/otplogin', (req, res) => {
-  req.session.forgotPassword = false
+
+  try{
+    req.session.forgotPassword = false
   res.render('user/otplogin', {
     checkMobileErr: req.session.checkMobileErr,
     otpblockError: req.session.otpblockError,
@@ -176,6 +178,11 @@ router.get('/otplogin', (req, res) => {
   req.session.checkMobileErr = false
   req.session.otpblockError = false
   req.session.invalidOtpError = false
+
+  }catch{
+    res.redirect('/login')
+  }
+  
 })
 
 
@@ -183,7 +190,9 @@ router.get('/otplogin', (req, res) => {
 
 
 router.post('/otplogin', async (req, res) => {
-  let user = await userHelpers.checkMobile(req.body.phone)
+
+  try{
+    let user = await userHelpers.checkMobile(req.body.phone)
   req.session.temp = user
   await userHelpers.checkMobile(req.body.phone).then((response) => {
     if (user) {
@@ -208,6 +217,11 @@ router.post('/otplogin', async (req, res) => {
       res.redirect('/otplogin')
     }
   })
+  }catch{
+    res.redirect('/otplogin')
+  }
+  
+  
 })
 
 
@@ -222,7 +236,11 @@ router.get('/enterotp', (req, res) => {
 
 
 router.post('/enterotp', (req, res) => {
-  let otp = req.body.otp
+
+  try{
+
+
+    let otp = req.body.otp
   let phone = req.body.phone
   console.log(otp);
   console.log(phone);
@@ -252,6 +270,14 @@ router.post('/enterotp', (req, res) => {
     }).catch((err) => {
       console.log(err);
     })
+
+  }catch{
+
+    res.redirect('/otplogin')
+
+  }
+
+  
 })
 
 
@@ -259,28 +285,36 @@ router.post('/enterotp', (req, res) => {
 
 
 router.get('/shop', async (req, res) => {
-  let user = req.session.user
-  let cartCount = null
-  let wishlistCount = null
-  if (req.session.user) {
-    cartCount = await userHelpers.getCartCount(req.session.user._id)
-    wishlistCount = await userHelpers.getWishlistCount(req.session.user._id)
-  }
-  let allProducts = await productHelpers.getAllProductUser()
-  let todayDate = new Date().toISOString().slice(0, 10);
-  let startProOffer = await offerHelpers.startProductOffer(todayDate);
-  let startCatOffer = await offerHelpers.startCategoryOffer(todayDate)
 
-  allProducts.forEach(async (element) => {
-    if (element.stock <= 10 && element.stock != 0) {
-      element.fewStock = true;
-    } else if (element.stock == 0) {
-      element.noStock = true;
+  try{
+    let user = req.session.user
+    let cartCount = null
+    let wishlistCount = null
+    if (req.session.user) {
+      cartCount = await userHelpers.getCartCount(req.session.user._id)
+      wishlistCount = await userHelpers.getWishlistCount(req.session.user._id)
     }
-  });
+    let allProducts = await productHelpers.getAllProductUser()
+    let todayDate = new Date().toISOString().slice(0, 10);
+    let startProOffer = await offerHelpers.startProductOffer(todayDate);
+    let startCatOffer = await offerHelpers.startCategoryOffer(todayDate)
+  
+    allProducts.forEach(async (element) => {
+      if (element.stock <= 10 && element.stock != 0) {
+        element.fewStock = true;
+      } else if (element.stock == 0) {
+        element.noStock = true;
+      }
+    });
+  
+  
+    res.render('user/shop', { allProducts, user, cartCount, wishlistCount, todayDate, startProOffer, startCatOffer })
+
+  }catch{
+    res.redirect('/shop')
+  }
 
 
-  res.render('user/shop', { allProducts, user, cartCount, wishlistCount, todayDate, startProOffer, startCatOffer })
 
 })
 
@@ -392,7 +426,16 @@ router.get('/place-order', verifyLogin, async (req, res) => {
   let userAddress = await userHelpers.getAddress(req.session.user._id)
   let total = await userHelpers.getTotalAmount(req.session.user._id)
   // let startCatOffer=await offerHelper.startCategoryOffer(todayDate)
-  res.render('user/place-order', { total, user: req.session.user, userAddress, startCouponOffer, cartCount, wishlistCount })
+
+
+  let wallet = await userHelpers.findWallet(req.session.user._id)
+
+  if (wallet > total){
+    walletstatus = true
+  }else{
+    walletstatus = false
+  }
+  res.render('user/place-order', { total, user: req.session.user, userAddress, startCouponOffer, cartCount, wishlistCount,walletstatus })
 })
 
 
@@ -659,12 +702,11 @@ router.get('/user-profile', verifyLogin, async (req, res) => {
   cartCount = await userHelpers.getCartCount(req.session.user._id)
   let wallet = await userHelpers.findWallet(req.session.user._id);
   wallet = wallet.wallet
-  res.render('user/userProfilenew', { user: req.session.user, wallet, userDetails, passwordError: req.session.passwordError, passwordChanger: req.session.passwordChanger, cartCount })
+  res.render('user/userprofilelatest', { user: req.session.user, wallet, userDetails, passwordError: req.session.passwordError, passwordChanger: req.session.passwordChanger, cartCount })
   req.session.passwordError = false
   req.session.passwordChanger = false
 
 })
-
 
 
 

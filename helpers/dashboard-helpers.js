@@ -4,7 +4,7 @@ var objectId = require('mongodb').ObjectId
 
 module.exports = {
 
-   //total users count  
+    //total users count  
     getUsersCount: () => {
         return new Promise(async (resolve, reject) => {
             let count = 0
@@ -18,6 +18,7 @@ module.exports = {
 
         })
     },
+
 
 
     totalOrders: () => {
@@ -81,7 +82,7 @@ module.exports = {
     },
 
 
-    
+
     weeklyRevenue: () => {
         return new Promise(async (resolve, reject) => {
             // console.log(new Date(new Date()-1000*60*60*24*2));
@@ -115,6 +116,9 @@ module.exports = {
 
         })
     },
+
+
+
     yearlyRevenue: () => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -150,6 +154,7 @@ module.exports = {
     },
 
 
+
     totalRevenue: () => {
         return new Promise(async (resolve, reject) => {
             let totalRevenue = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
@@ -175,6 +180,9 @@ module.exports = {
             resolve(totalRevenue[0].totalAmount)
         })
     },
+
+
+    
     getchartData: (req, res) => {
 
         return new Promise((resolve, reject) => {
@@ -251,8 +259,8 @@ module.exports = {
                 })
             })
 
-        })
-    }
+        })
+    }
 
 }
 

@@ -48,15 +48,16 @@
                                     <input type="text" id="id" name="orderId" class="d-none" value="{{this._id}}">
                                     <select name="status" id="cars" style="width:10rem ;" class="w-100 form-control">
                                         <option name="" value="{{this.status}}">{{this.status}}</option>
-
+                                         {{#if this.isOutForDelivery}}
+                                        <option value="delivered">delivered</option>
+                                        {{/if}}
                                         {{#if this.isShipped}}
                                         <option value="Out For Delivery">Out For Delivery</option>
                                         <option value="cancelled">Cancel</option>
                                         {{else if this.isDelivered}}
                                         {{else if this.isCancelled}}
                                         
-                                        {{else if this.isOutForDelivery}}
-                                        <option value="delivered">delivered</option>
+                                       
                                         {{else}}
                                         <option value="placed">placed</option>
                                         <option value="shipped">shipped</option>

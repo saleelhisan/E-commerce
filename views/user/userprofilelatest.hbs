@@ -33,23 +33,18 @@
         border-radius: 50%;
         overflow: hidden;
         background-color: #111;
-
     }
-
     .profilepic:hover .profilepic__content {
         opacity: 1;
     }
-
     .profilepic:hover .profilepic__image {
         opacity: .5;
     }
-
     .profilepic__image {
         object-fit: fill;
         opacity: 1;
         transition: opacity .2s ease-in-out;
     }
-
     .profilepic__content {
         position: absolute;
         top: 0;
@@ -64,22 +59,19 @@
         opacity: 0;
         transition: opacity .2s ease-in-out;
     }
-
     .profilepic__icon {
         color: white;
         padding-bottom: 8px;
     }
-
     .fas {
         font-size: 20px;
     }
-
     .profilepic__text {
         text-transform: uppercase;
         font-size: 12px;
         width: 50%;
         text-align: center;
-    }
+    }
 </style>
 {{!-- <div class="ml-auto" style="width:74%"> --}}
     <div class="page-header text-center" style="background-image: url('/assets/images/page-header-bg.jpg')">
@@ -128,7 +120,6 @@
                                     <input type="submit" id="editDp" hidden>
                                 </form>
                             </div>
-                            </div>
                         </div>
                         {{!-- end --}}
                         {{!-- crop --}}
@@ -144,7 +135,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{!-- crop end  --}}
+                        {{!-- crop end  --}}
 
                             <div class="shadow rounded mt-3 p-3">
                                 <h5 class="text-success"><i class="fa-solid fa-wallet"></i> Wallet : ₹ {{wallet}}</h5>
@@ -320,7 +311,6 @@
                             <select class="w-100" class="form-control" aria-placeholder="State" id="country">
                                 <option disable</option>
                                 <option>fghj</option>
-
                             </select>
                         </div> --}}
                         <div class="col-12 mb-3">
@@ -347,6 +337,9 @@
                     </div>
 
                 </form>
+
+
+
             </div>
         </div>
     </div>
@@ -365,7 +358,7 @@
                     <!-- Email input -->
                     <div class="form-outline mb-4">
                         <i class="fa fa-lock prefix grey-text"></i>
-                        <input type="password" id="" class="form-control" name="password" placeholder="Old password" />
+                        <input type="password" id="" class="form-control" name="password" placeholder="Old password" required/>
                         {{!-- <label class="form-label" for="">Old Password</label> --}}
                     </div>
 
@@ -373,7 +366,7 @@
                     <div class="form-outline mb-4">
                         <i class="fa fa-lock prefix grey-text"></i>
                         <input type="password" id="" class="form-control" name="newpassword"
-                            placeholder="New Password" />
+                            placeholder="New Password"  required/>
                         {{!-- <label class="form-label" for="">New Password</label> --}}
                     </div>
 
@@ -453,29 +446,22 @@
     function validateImage() {
         var fileInput =
             document.getElementById('id_image1');
-
         var filePath = fileInput.value;
-
         // Allowing file type
         var allowedExtensions =
             /(\.jpg|\.webp|\.jpeg|\.png|\.gif)$/i;
-
         if (!allowedExtensions.exec(filePath)) {
             imageError.innerHTML = "Image is not valid";
             imageError.style.color = "red";
             return false;
         }
-
         imageError.innerHTML = "Image is valid";
         imageError.style.color = "green";
         return true;
-
     }
-
     const imagebox1 = document.getElementById('image-box1')
     const crop_btn1 = document.getElementById('crop-btn1')
     const input1 = document.getElementById('id_image1')
-
     // When user uploads the image this event will get triggered
     input1.addEventListener('change', () => {
         if (imageError.innerHTML == "Image is valid") {
@@ -523,20 +509,17 @@
                     // Hide the crop button
                     document.getElementById('crop-btn1').style.display = 'none'
                     document.getElementById('cancel-crop').style.display = 'none'
-
                     $("#editDp").trigger("click")
-
                 })
             })
         }
-    })
+    })
 </script>
 
 <script>
     function deleteAddress(event) {
         event.preventDefault();
         var link = event.currentTarget.href;
-
         Swal.fire({
             title: 'Are you sure?',
             text: "Do you want to delete ",
@@ -573,7 +556,6 @@
                 let name = document.getElementById('name').value
                 let email = document.getElementById('email').value
                 let number = document.getElementById('number').value
-
                 $.ajax({
                     ur: '/user/Profile',
                     method: 'post',
@@ -594,16 +576,12 @@
                         location.reload();
                     }
                 })
-
             } --}
     }
-
     
-
     function editAddress(event2) {
         event2.preventDefault();
         var link = event2.currentTarget.href;
-
         Swal.fire({
             title: 'You are about to edit !',
             text: "Do you want to delete ",
@@ -640,7 +618,7 @@
         document.getElementById('state1').value=state
         document.getElementById('pincode1').value=pincode
         document.getElementById('phone1').value=phone
-    }
+    }
 </script>
 
 
@@ -665,13 +643,12 @@
 					
 				}).then(()=>{
 					location.reload()
-
 					})
 				}
                 
             }
         })
-    })
+    })
 </script>
 
 
@@ -684,16 +661,13 @@
     var stateError = document.getElementById('state-error');
     var pincodeError = document.getElementById('pincode-error');
     var mobileError = document.getElementById('mobile-error');
-
     function validateName() {
         var name = document.getElementById('name').value.trim();
-
         if (name.length == 0) {
             nameError.innerHTML = 'Name is Required';
             nameError.style.color = 'red'
             return false;
         }
-
         if (!name.match(/^[A-Za-z ]*$/)) {
             nameError.innerHTML = 'Write a FullName';
             nameError.style.color = 'red'
@@ -704,14 +678,12 @@
             nameError.style.color = 'red'
             return false;
         }
-
         nameError.innerHTML = 'Name is valid';
         nameError.style.color = 'green'
         return true;
     }
     function validateAddress() {
         var address = document.getElementById('street_address').value.trim();
-
         if (address.length == 0) {
             addressError.innerHTML = 'Address is Required';
             addressError.style.color = 'red'
@@ -723,7 +695,6 @@
     }
     function validateTown() {
         var town = document.getElementById('town').value.trim();
-
         if (town.length == 0) {
             townError.innerHTML = 'Feild is Required';
             townError.style.color = 'red'
@@ -735,7 +706,6 @@
     }
     function validateDistrict() {
         var district = document.getElementById('district').value.trim();
-
         if (district.length == 0) {
             districtError.innerHTML = 'Feild is Required';
             districtError.style.color = 'red'
@@ -747,7 +717,6 @@
     }
     function validateState() {
         var state = document.getElementById('state').value.trim();
-
         if (state.length == 0) {
             stateError.innerHTML = 'Feild is Required';
             stateError.style.color = 'red'
@@ -759,7 +728,6 @@
     }
     function validatePincode() {
         var pincode = document.getElementById('pincode').value.trim();
-
         if (pincode.length == 0) {
             pincodeError.innerHTML = 'Feild is Required';
             pincodeError.style.color = 'red'
@@ -783,7 +751,6 @@
         var mobile = document.getElementById('phone').value.trim();
         var Required = 15;
         var left = Required - mobile.length;
-
         if (mobile.length == 0 || mobile.length < 10) {
             mobileError.innerHTML = 'more character Required';
             mobileError.style.color = 'red'
@@ -793,10 +760,7 @@
         mobileError.style.color = 'green'
         return true;
     }
-
-
     $(document).on("submit", "form", function (e) {
-
         validateName()
         validateMobile()
         validateAddress()
@@ -804,9 +768,7 @@
         validateDistrict()
         validateState()
         validatePincode()
-
         if (validateName() && validateMobile() && validateAddress() && validateTown() && validateDistrict() && validateState() && validatePincode()) {
-
         } else {
             e.preventDefault();
             swal.fire('Invalid data!');

@@ -42,6 +42,8 @@ router.use(setAdminLayout)
 //   })
 // })
 
+
+
 router.get('/', verifyAdminLogin, async function (req, res, next) {
   let adminsession = req.session.admin
   let userCount = await dashboardHelpers.getUsersCount()
@@ -55,6 +57,8 @@ router.get('/', verifyAdminLogin, async function (req, res, next) {
   res.render('admin/dashboard', { admin: true, adminsession, userCount, orderCount, productCount, cancelCount, dailyRevenue, totalRevenue, weeklyRevenue, yearlyRevenue })
 })
 
+
+
 router.get('/sales-management', verifyAdminLogin, async (req, res) => {
   let data = await adminHelpers.monthlyReport()
   let daily = await adminHelpers.dailyReport()
@@ -64,6 +68,8 @@ router.get('/sales-management', verifyAdminLogin, async (req, res) => {
   // console.log(daily,"this is daily");
   res.render('admin/sales-management', { admin: true, adminsession: req.session.admin, data, daily, weekly, yearly })
 })
+
+
 
 router.post('/custom-report', verifyAdminLogin, async (req, res) => {
 
@@ -86,12 +92,16 @@ router.post('/inventory', (req, res) => {
   })
 })
 
+
+
 router.get('/view-user', verifyAdminLogin, (req, res) => {
   let adminsession = req.session.admin
   adminHelpers.getAllUser().then((allUsers) => {
     res.render('admin/view-user', { admin: true, allUsers, adminsession });
   })
 })
+
+
 router.get('/add-user', verifyAdminLogin, (req, res) => {
   let adminsession = req.session.admin
   if (adminsession) {
@@ -103,6 +113,8 @@ router.get('/add-user', verifyAdminLogin, (req, res) => {
 
   //res.render('admin/add-user')                                                   
 })
+
+
 
 router.post('/add-user', verifyAdminLogin, function (req, res, next) {              //calling addUser function while submitting the adduserform  result is a callback
 
@@ -119,6 +131,7 @@ router.post('/add-user', verifyAdminLogin, function (req, res, next) {          
 })
 
 
+
 router.get('/delete-user/:email', verifyAdminLogin, (req, res) => {
   let userEmail = req.params.email                                //deletting user data
   console.log(userEmail);
@@ -127,6 +140,8 @@ router.get('/delete-user/:email', verifyAdminLogin, (req, res) => {
   })
 
 })
+
+
 
 router.get('/edit-user/:email', verifyAdminLogin, async (req, res) => {                //editting user data
   let adminsession = req.session.admin
@@ -144,11 +159,16 @@ router.get('/edit-user/:email', verifyAdminLogin, async (req, res) => {         
   }
 
 })
+
+
 router.post('/edit-user/:email', verifyAdminLogin, (req, res) => {                        //user edited
   adminHelpers.editUser(req.params.email, req.body).then(() => {
     res.redirect('/admin')
   })
 })
+
+
+
 router.get('/admin-login', (req, res) => {
   let adminsession = req.session.admin
   if (adminsession) {
@@ -158,6 +178,9 @@ router.get('/admin-login', (req, res) => {
     req.session.adminLoginError = false
   }
 })
+
+
+
 router.post('/admin-login', (req, res) => {
   adminHelpers.adminLogin(req.body).then((response) => {
     if (response.status) {
@@ -172,12 +195,17 @@ router.post('/admin-login', (req, res) => {
   })
 })
 
+
+
 router.get('/admin-logout', (req, res) => {
   // req.session.destroy(()=>{
   req.session.admin = null
   res.redirect('/admin/admin-login')
   // })
 })
+
+
+
 
 router.get('/add-product', verifyAdminLogin, (req, res) => {
   let adminsession = req.session.admin
@@ -189,6 +217,8 @@ router.get('/add-product', verifyAdminLogin, (req, res) => {
     active = false
   })
 })
+
+
 
 
 router.post('/add-product', verifyAdminLogin, function (req, res, next) {
@@ -210,6 +240,9 @@ router.post('/add-product', verifyAdminLogin, function (req, res, next) {
       res.redirect("/admin/add-product")
     })
 })
+
+
+
 router.get("/view-product", verifyAdminLogin, function (req, res) {
   let adminsession = req.session.admin
   if (adminsession) {
@@ -222,6 +255,9 @@ router.get("/view-product", verifyAdminLogin, function (req, res) {
     res.redirect('/admin/admin-login')
   }
 })
+
+
+
 
 router.get('/delete-product/:id', verifyAdminLogin, (req, res) => {
   let productId = req.params.id                                //deletting user data
@@ -236,12 +272,18 @@ router.get('/delete-product/:id', verifyAdminLogin, (req, res) => {
 
 })
 
+
+
+
 router.get('/edit-product/:id', verifyAdminLogin, async (req, res) => {
   let adminsession = req.session.admin
   let product = await productHelpers.getProductDetails(req.params.id)
   console.log(product);
   res.render('admin/edit-product', { product, adminsession })
 })
+
+
+
 router.post('/edit-product/:id', verifyAdminLogin, (req, res) => {
   console.log(req.params.id);
   productHelpers.updateProduct(req.params.id, req.body).then(() => {
@@ -290,6 +332,8 @@ router.get('/add-category', verifyAdminLogin, (req, res) => {
   res.render('admin/add-category', { adminsession, catAddErr })
 })
 
+
+
 router.post('/add-category', verifyAdminLogin, (req, res) => {
   adminHelpers.addCategory(req.body).then((response) => {
     res.redirect('/admin/view-category')
@@ -299,6 +343,8 @@ router.post('/add-category', verifyAdminLogin, (req, res) => {
     res.redirect("/admin/add-category")
   })
 })
+
+
 
 router.get('/delete-category/:id/:category', verifyAdminLogin, (req, res) => {
 
@@ -348,7 +394,7 @@ router.get('/unblock-user/:id', verifyAdminLogin, (req, res) => {
 router.get('/order-management', verifyAdminLogin, async (req, res) => {
   let adminsession = req.session.admin
   let allOrderDetails = await adminHelpers.getAllUserNames()
-  res.render('admin/all-orders', { adminsession, allOrderDetails })
+  res.render('admin/allorders', { adminsession, allOrderDetails })
 })
 
 

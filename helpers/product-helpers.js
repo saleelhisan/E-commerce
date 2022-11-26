@@ -4,9 +4,12 @@ var collection = require('../config/collection')
 
 var objectID = require('mongodb').ObjectId
 module.exports = {
+
+
+
     addProduct: (product) => {
         product.date = new Date()
-        product.price=parseInt(product.price)
+        product.price = parseInt(product.price)
         return new Promise(async (resolve, reject) => {
             let products = await db.get().collection('product').findOne({ name: product.name })
             if (products) {
@@ -18,12 +21,18 @@ module.exports = {
             }
         })
     },
+
+
+    
     getAllProduct: () => {
         return new Promise(async (resolve, reject) => {
-            let products = await db.get().collection('product').find().sort({date:-1}).toArray()
+            let products = await db.get().collection('product').find().sort({ date: -1 }).toArray()
             resolve(products)
         })
     },
+
+
+
     deleteProduct: (productId) => {
         return new Promise((resolve, reject) => {
             db.get().collection('product').deleteOne({ _id: objectID(productId) }).then((response) => {
@@ -34,6 +43,9 @@ module.exports = {
         })
 
     },
+
+
+
     getProductDetails: (productId) => {
         return new Promise((resolve, reject) => {
             db.get().collection('product').findOne({ _id: objectID(productId) }).then((product) => {
@@ -41,6 +53,9 @@ module.exports = {
             })
         })
     },
+
+
+
     updateProduct: (productId, productDetails) => {
         return new Promise((resolve, reject) => {
             db.get().collection('product').updateOne({ _id: objectID(productId) }, {
@@ -55,12 +70,18 @@ module.exports = {
             })
         })
     },
+
+
+
     getAllProductUser: () => {
         return new Promise(async (resolve, reject) => {
             let products = await db.get().collection('product').find().toArray()
             resolve(products)
         })
     },
+
+
+
     viewProduct: (productId) => {
         return new Promise((resolve, reject) => {
             db.get().collection('product').findOne({ _id: objectID(productId) }).then((product) => {
@@ -68,21 +89,27 @@ module.exports = {
             })
         })
     },
-    getStocks:()=>{
-        return new Promise(async(resolve,reject)=>{
-            let stocks = await db.get().collection(collection.PRODUCT_COLLECTION).aggregate([{$project:{name:"$name",stock:"$stock"}}]).toArray()
-            resolve(stocks)      
-        })  
+
+
+
+    getStocks: () => {
+        return new Promise(async (resolve, reject) => {
+            let stocks = await db.get().collection(collection.PRODUCT_COLLECTION).aggregate([{ $project: { name: "$name", stock: "$stock" } }]).toArray()
+            resolve(stocks)
+        })
     },
-    updateStock:(proId,count)=>{
+
+
+    
+    updateStock: (proId, count) => {
         return new Promise((resolve, reject) => {
             // let currentock = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:objectID(proId)})
             // console.log(currentock);
-            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({_id:objectID(proId)},{
-                $set:{
-                    stock:parseInt(count) 
+            db.get().collection(collection.PRODUCT_COLLECTION).updateOne({ _id: objectID(proId) }, {
+                $set: {
+                    stock: parseInt(count)
                 }
-            }).then(()=>{
+            }).then(() => {
                 resolve()
             })
         })
@@ -92,11 +119,11 @@ module.exports = {
 
     //         let stocks = await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:objectID(proId)})
     //         resolve(stocks.stock);
-             
+
 
 
     //     })
     // }
-    
-    
+
+
 }

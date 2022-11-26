@@ -156,8 +156,12 @@
                                 <input type="radio" id="" name="paymentMethod" value="paypal">
                                 <label for="">Paypal</label><br>
                                 <img src="/assets/images/payments.png" alt="payments cards"><br>
+
+                                {{#if walletstatus}}
                                 <input type="radio" id="" name="paymentMethod" value="wallet">
                                 <label for="">Wallet</label><br>
+                                {{/if}}
+                                
 
                                 <button onsubmit="formSubmit()" type="submit"
                                     class="btn btn-outline-primary-2 btn-order btn-block">
