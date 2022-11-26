@@ -429,6 +429,7 @@ router.get('/place-order', verifyLogin, async (req, res) => {
 
 
   let wallet = await userHelpers.findWallet(req.session.user._id)
+  wallet = wallet.wallet
 
   if (wallet > total){
     walletstatus = true
