@@ -417,6 +417,8 @@ router.get('/delete-cart-item/:cartId/:proId', (req, res) => {
 
 
 router.get('/place-order', verifyLogin, async (req, res) => {
+
+
   let todayDate = new Date().toISOString().slice(0, 10);
   let startCouponOffer = await couponHelpers.startCouponOffer(todayDate)
   let cartCount = null
@@ -436,6 +438,8 @@ router.get('/place-order', verifyLogin, async (req, res) => {
   }else{
     walletstatus = false
   }
+  console.log(total);
+  console.log('total in get place order');
   res.render('user/place-order', { total, user: req.session.user, userAddress, startCouponOffer, cartCount, wishlistCount,walletstatus })
 })
 
@@ -448,6 +452,8 @@ router.post('/place-order', async (req, res) => {
   let products = await userHelpers.getCartProductList(req.body.userId)
   let totalPrice = await userHelpers.getTotalAmount(req.body.userId)
   let wallet = await userHelpers.findWalletAmount(req.session.user._id)
+  console.log(totalPrice);
+  console.log('total in post place order');
   wallet = wallet.wallet
   if (req.session.couponTotal) {
     totalPrice = req.session.couponTotal
@@ -640,15 +646,15 @@ router.get('/filter', async (req, res) => {
 
 
 
-router.post('/filter', async (req, res) => {
+// router.post('/filter', async (req, res) => {
 
-  let user = req.session.user
-  filter = req.body.filter
-  await userHelpers.filterFunction(filter).then((response) => {
-    filtered = response
-    res.render('user/shop', { filtered, user })
-  })
-})
+//   let user = req.session.user
+//   filter = req.body.filter
+//   await userHelpers.filterFunction(filter).then((response) => {
+//     filtered = response
+//     res.render('user/shop', { filtered, user })
+//   })
+// })
 
 
 
@@ -776,11 +782,13 @@ router.post('/coupon-apply', verifyLogin, async (req, res) => {
   let couponCode = req.body.coupon
   let userId = req.session.user._id
   let totalPrice = await userHelpers.getTotalAmount(userId);
-
+ 
 
 
   await couponHelpers.validateCoupon(couponCode, userId, totalPrice).then((response) => {
     req.session.couponTotal = response.total
+    console.log(response.total);
+    console.log('total in post coupon apply');
     if (response.success) {
       res.json({ couponSuccess: true, total: response.total, discountValue: response.discountValue, couponCode })
     } else if (response.couponUsed) {

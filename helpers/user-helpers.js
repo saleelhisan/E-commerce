@@ -40,6 +40,7 @@ module.exports = {
 
     doSignup: (userData) => {
         return new Promise(async (resolve, reject) => {
+            console.log('inside async function');
             let response = {}
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({ email: userData.email })
             let user1 = await db.get().collection(collection.USER_COLLECTION).findOne({ mobile: userData.mobile })
@@ -48,8 +49,9 @@ module.exports = {
             }
             else {
                 let referral = userData.referral;
+
                 if (referral) {
-                    let referUser = await db
+                    let referUser = db
                         .get()
                         .collection(collection.USER_COLLECTION)
                         .findOne({ referralCode: referral });

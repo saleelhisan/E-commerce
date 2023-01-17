@@ -136,7 +136,7 @@
 
 							<div class="form-group">
 								<label for="register-password-2">Password *</label>
-								<input type="password" class="form-control" id="register-email-2" name="password">
+								<input type="password" class="form-control" id="password" name="password" onkeyup="validatePassword()">
 								<strong><span id="password-error"></span></strong>
 
 							</div>
@@ -258,7 +258,7 @@
 	function validatePassword() {
 		var message = document.getElementById('password').value.trim();
 
-		if (message.length == 0 || message.length < 3) {
+		if (message.length == 0 || message.length < 5) {
 			passwordError.innerHTML = 'more character Required';
 			passwordError.style.color = 'red'
 			return false;
