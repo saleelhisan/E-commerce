@@ -38,6 +38,15 @@ const verifyLogin = async (req, res, next) => {
 };
 
 
+// const verifyLogin = async (req, res, next) => {
+//   if (req.session.user) {
+//     req.session.user = null
+//     next()
+//   } else {
+//     res.redirect("/login");
+//   }
+// };
+
 
 
 
@@ -48,7 +57,7 @@ const verifyLogin = async (req, res, next) => {
 const serviceSID = process.env.serviceSID
 const accountSID = process.env.accountSID
 const authToken = process.env.authToken
-const client = require('twilio')(accountSID, authToken)   
+const client = require('twilio')(accountSID, authToken)
 
 
 
@@ -70,13 +79,13 @@ router.get('/', async function (req, res, next) {
   res.render('user/index', { user, cartCount, allProductshome, allBanners, wishlistCount, passwordChanged: req.session.passwordChanged, referandearn: req.session.referandearn });
   req.session.passwordChanged = false
   req.session.referandearn = false
-   
- 
+
+
 });
 
 
 
-router.get('/about',(req,res)=>{
+router.get('/about', (req, res) => {
   res.render('user/about')
 })
 
@@ -168,21 +177,21 @@ router.get('/logout', (req, res) => {                           //destroying ses
 
 router.get('/otplogin', (req, res) => {
 
-  try{
+  try {
     req.session.forgotPassword = false
-  res.render('user/otplogin', {
-    checkMobileErr: req.session.checkMobileErr,
-    otpblockError: req.session.otpblockError,
-    invalidOtpError: req.session.invalidOtpError
-  })
-  req.session.checkMobileErr = false
-  req.session.otpblockError = false
-  req.session.invalidOtpError = false
+    res.render('user/otplogin', {
+      checkMobileErr: req.session.checkMobileErr,
+      otpblockError: req.session.otpblockError,
+      invalidOtpError: req.session.invalidOtpError
+    })
+    req.session.checkMobileErr = false
+    req.session.otpblockError = false
+    req.session.invalidOtpError = false
 
-  }catch{
+  } catch {
     res.redirect('/login')
   }
-  
+
 })
 
 
@@ -191,44 +200,44 @@ router.get('/otplogin', (req, res) => {
 
 router.post('/otplogin', async (req, res) => {
 
-  try{
+  try {
     let user = await userHelpers.checkMobile(req.body.phone)
-  req.session.temp = user
-  await userHelpers.checkMobile(req.body.phone).then((response) => {
-    if (user) {
-      if (response.isBlocked) {
-        req.session.otpblockError = "You are blocked by admin"
-        res.redirect('/otplogin')
+    req.session.temp = user
+    await userHelpers.checkMobile(req.body.phone).then((response) => {
+      if (user) {
+        if (response.isBlocked) {
+          req.session.otpblockError = "You are blocked by admin"
+          res.redirect('/otplogin')
+        } else {
+          client.verify
+            .services(serviceSID)                                             //otp login page post
+            .verifications.create({
+              to: `+91${req.body.phone}`,
+              channel: "sms"
+            })
+            .then((response) => {
+              res.render('user/enterotp', { phone: req.body.phone })
+            }).catch((err) => {
+              console.log('error');
+            })
+        }
       } else {
-        client.verify
-          .services(serviceSID)                                             //otp login page post
-          .verifications.create({
-            to: `+91${req.body.phone}`,
-            channel: "sms"
-          })
-          .then((response) => {
-            res.render('user/enterotp', { phone: req.body.phone })
-          }).catch((err) => {
-            console.log('error');
-          })
+        req.session.checkMobileErr = "Mobile number not registered"
+        res.redirect('/otplogin')
       }
-    } else {
-      req.session.checkMobileErr = "Mobile number not registered"
-      res.redirect('/otplogin')
-    }
-  })
-  }catch{
+    })
+  } catch {
     res.redirect('/otplogin')
   }
-  
-  
+
+
 })
 
 
 
 router.get('/enterotp', (req, res) => {
   let user = req.session.user
-  res.render('user/enterotp', { invalidOtpError: req.session.invalidOtpError, user,forgotPassword:req.session.forgotPassword })
+  res.render('user/enterotp', { invalidOtpError: req.session.invalidOtpError, user, forgotPassword: req.session.forgotPassword })
   req.session.invalidOtpError = false
 })
 
@@ -237,47 +246,47 @@ router.get('/enterotp', (req, res) => {
 
 router.post('/enterotp', (req, res) => {
 
-  try{
+  try {
 
 
     let otp = req.body.otp
-  let phone = req.body.phone
-  console.log(otp);
-  console.log(phone);
-  console.log(req.session.forgotPassword);
-  client.verify
-    .services(serviceSID)
-    .verificationChecks.create({
-      to: `+91${phone}`,
-      code: otp
-    }).then((response) => {
-      console.log('success');
-      console.log(response);
-      let valid = response.valid
-      if (valid) {
-        req.session.loggedIn = true;
-        req.session.user = req.session.temp;
-        if (req.session.forgotPassword) {
-          res.redirect('/change-forgot-password')
+    let phone = req.body.phone
+    console.log(otp);
+    console.log(phone);
+    console.log(req.session.forgotPassword);
+    client.verify
+      .services(serviceSID)
+      .verificationChecks.create({
+        to: `+91${phone}`,
+        code: otp
+      }).then((response) => {
+        console.log('success');
+        console.log(response);
+        let valid = response.valid
+        if (valid) {
+          req.session.loggedIn = true;
+          req.session.user = req.session.temp;
+          if (req.session.forgotPassword) {
+            res.redirect('/change-forgot-password')
+          } else {
+            res.redirect("/");
+          }
+
         } else {
-          res.redirect("/");
+          req.session.invalidOtpError = true
+          res.redirect('/otplogin')
         }
+      }).catch((err) => {
+        console.log(err);
+      })
 
-      } else {
-        req.session.invalidOtpError = true
-        res.redirect('/otplogin')
-      }
-    }).catch((err) => {
-      console.log(err);
-    })
-
-  }catch{
+  } catch {
 
     res.redirect('/otplogin')
 
   }
 
-  
+
 })
 
 
@@ -286,7 +295,7 @@ router.post('/enterotp', (req, res) => {
 
 router.get('/shop', async (req, res) => {
 
-  try{
+  try {
     let user = req.session.user
     let cartCount = null
     let wishlistCount = null
@@ -298,7 +307,7 @@ router.get('/shop', async (req, res) => {
     let todayDate = new Date().toISOString().slice(0, 10);
     let startProOffer = await offerHelpers.startProductOffer(todayDate);
     let startCatOffer = await offerHelpers.startCategoryOffer(todayDate)
-  
+
     allProducts.forEach(async (element) => {
       if (element.stock <= 10 && element.stock != 0) {
         element.fewStock = true;
@@ -306,11 +315,11 @@ router.get('/shop', async (req, res) => {
         element.noStock = true;
       }
     });
-  
-  
+
+
     res.render('user/shop', { allProducts, user, cartCount, wishlistCount, todayDate, startProOffer, startCatOffer })
 
-  }catch{
+  } catch {
     res.redirect('/shop')
   }
 
@@ -344,27 +353,27 @@ router.get('/product/:id', async (req, res) => {
 
 
 
-router.get('/add-to-cart/:id', verifyLogin, async(req, res) => {   
-  let count = await userHelpers.findProCount(req.session.user._id,req.params.id)
+router.get('/add-to-cart/:id', verifyLogin, async (req, res) => {
+  let count = await userHelpers.findProCount(req.session.user._id, req.params.id)
 
 
   let stock = await userHelpers.findStock(req.params.id)
-  if(count >= 3 ){
-    res.json({limit:true})
+  if (count >= 3) {
+    res.json({ limit: true })
   }
-else{
-  if(count == stock){
-    res.json({noStock:true})
+  else {
+    if (count == stock) {
+      res.json({ noStock: true })
+    }
+    else {
+      userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
+        res.json({ status: true })
+      })
+    }
   }
-   else{
-    userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
-      res.json({ status: true })
-    })
-   } 
-}
 
-  
-   
+
+
 })
 
 
@@ -397,7 +406,7 @@ router.post('/change-product-quantity', async (req, res, next) => {
     res.json(response)
   }).catch(() => {
 
-    
+
     res.json({ noStock: true })
   })
 })
@@ -433,14 +442,14 @@ router.get('/place-order', verifyLogin, async (req, res) => {
   let wallet = await userHelpers.findWallet(req.session.user._id)
   wallet = wallet.wallet
 
-  if (wallet > total){
+  if (wallet > total) {
     walletstatus = true
-  }else{
+  } else {
     walletstatus = false
   }
   console.log(total);
   console.log('total in get place order');
-  res.render('user/place-order', { total, user: req.session.user, userAddress, startCouponOffer, cartCount, wishlistCount,walletstatus })
+  res.render('user/place-order', { total, user: req.session.user, userAddress, startCouponOffer, cartCount, wishlistCount, walletstatus })
 })
 
 
@@ -782,7 +791,7 @@ router.post('/coupon-apply', verifyLogin, async (req, res) => {
   let couponCode = req.body.coupon
   let userId = req.session.user._id
   let totalPrice = await userHelpers.getTotalAmount(userId);
- 
+
 
 
   await couponHelpers.validateCoupon(couponCode, userId, totalPrice).then((response) => {

@@ -214,7 +214,7 @@
                                             </tr>
                                             <tr>
                                                 <td class=" text-center pt-3" colspan="2">
-                                                    <button class="btn btn-outline-warning" type="submit"
+                                                    <button class="btn btn-outline-primary" type="submit"
                                                         onclick="">Edit &
                                                         Update</button>
                                                 </td>
@@ -249,8 +249,8 @@
                                 {{this.phone}}
                             </td>
                              <td>   <button onclick="editAddress('{{this.id}}','{{this.name}}','{{this.address}}','{{this.town}}','{{this.district}}','{{this.state}}','{{this.pincode}}','{{this.phone}}')" class="text-white btn  fw-normal"
-                                    style=" color:#07315d " 
-                                    data-bs-toggle="modal" data-bs-target="#exampleModall"><i style="color: #07315d;" class="fa fa-pencil square-o fa-2x  "
+                                    style=" color:#1cc0a0 " 
+                                    data-bs-toggle="modal" data-bs-target="#exampleModall"><i  class="fa fa-pencil square-o fa-2x btn-outline-primary  "
                                         aria-hidden="true"></i></button></td>
                             <td><a onclick="deleteAddress(event)" href="/delete-address/{{this.id}}"><i
                                         class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td>
@@ -273,9 +273,9 @@
 <div class="modal fade" id="exampleModall" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
     <div class="modal-dialog d-flex justify-content-center">
         <div class="modal-content w-75">
-            <div class="modal-header  " style="background-color: #07315d;" > 
+            <div class="modal-header  " style="background-color: #1cc0a0;" > 
                 <h5 class="modal-title text-white " id="exampleModalLabel1">Edit Address</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-danger" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
                 <p class="text-danger" id="error" hidden >oops!!! something went wrong!!!</p>
@@ -372,7 +372,7 @@
 
                     <!-- Submit button -->
                     {{!-- <button type="submit" class="btn btn-primary btn-block">Login</button> --}}
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success">Save changes</button>
                 </form>
             </div>
@@ -434,7 +434,7 @@
                     
                     <!-- Submit button -->
                     {{!-- <button type="submit" class="btn btn-primary btn-block">Login</button> --}}
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success">Add address</button>
                 </form>
             </div>
@@ -639,7 +639,7 @@
 					icon: "success",
 					title: "address edited successfully",
 					showConfirmButton: true,
-					confirmButtonColor: '#07315d',
+					confirmButtonColor: '#1cc0a0',
 					
 				}).then(()=>{
 					location.reload()
