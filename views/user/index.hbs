@@ -186,21 +186,21 @@
                                         <span class="ratings-text">( 10 Reviews )</span>
                                     </div><!-- End .rating-container --> --}}
                                     
-                                    {{#if user}}
+                                    {{!-- {{#if user}} --}}
+                                
                                     <div class="product-action">
                                         <button onclick="addToCart('{{this._id}}')"
-                                            class="btn-product btn-cart"><span>add
-                                                to cart</span></button>
+                                            class="btn-product btn-cart"><span>add to cart</span></button>
                                         <a onclick="addToWishlist('{{this._id}}')" class="btn-product btn-wishlist"><span>Add to Wishlist</span></a>
                                     </div><!-- End .product-action -->
-                                    {{else}}
+                                    {{!-- {{else}}
                                     <div class="product-action">
                                         <a href="/login"
                                             class="btn-product btn-cart"><span>add
                                                 to cart</span></a>
                                         <a href="/login" class="btn-product btn-wishlist"><span>Add to Wishlist</span></a>
                                     </div><!-- End .product-action -->
-                                    {{/if}}
+                                    {{/if}} --}}
                                 </div><!-- End .product-footer -->
                             </div><!-- End .product-body -->
                         </div><!-- End .product -->
